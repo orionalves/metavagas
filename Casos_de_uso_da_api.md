@@ -4,7 +4,7 @@
    - **Ator**: Cliente da API.
    - **Descrição**: Cliente da API envia uma requisição POST com nome, email e senha para registrar um novo usuário.
    - **Fluxo Principal**:
-     1. Cliente da API envia uma requisição POST para o endpoint `/users` com um payload contendo nome, email e senha.
+     1. Cliente da API envia uma requisição POST para o endpoint `/signup` com um payload contendo nome, email e senha.
      2. API valida os dados e cria um novo usuário.
      3. API retorna uma resposta com status 201 (Created) e os detalhes do usuário registrado.
 

@@ -9,6 +9,7 @@
     "skipLibCheck": true,
     "paths": {
       "@/*": [ "./src/*" ],
+      "@/auth/*": [ "./src/app/auth/*" ],
       "@/database/*": [ "./src/database/*" ],
       "@/routes/*": [ "./src/routes/*" ],
       "@/user/*": [ "./src/app/user/*" ],

@@ -1,7 +1,6 @@
 import { describe, it, vi, expect } from 'vitest'
 import { TypeUser } from '@/user/entities/User'
 import { UserRepository } from '@/user/repositories/UserRepository'
-// import { UserService } from '@/user/services/UserService'
 import { UserService } from './UserService'
 import { commonError } from '@/utils/commonError'
 import { status } from '@/utils/status'
@@ -19,7 +18,6 @@ const paramsMock = {
   password: '123'
 }
 
-// System under test
 const sut = new UserService(repositoryMock as unknown as UserRepository)
 
 describe('UserService', () => {
