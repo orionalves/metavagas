@@ -11,6 +11,7 @@
       "@/*": [ "./src/*" ],
       "@/database/*": [ "./src/database/*" ],
       "@/routes/*": [ "./src/routes/*" ],
+      "@/user/*": [ "./src/app/user/*" ],
       "@/utils/*": [ "./src/utils/*" ],
     },
     "types": [ "vitest/globals" ]
