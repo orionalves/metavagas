@@ -21,7 +21,7 @@ const paramsMock = {
 const sut = new UserService(repositoryMock as unknown as UserRepository)
 
 describe('UserService', () => {
-  it('should be able to return an error if user already exists', async () => {
+  it('Should be able to return an error if user already exists.', async () => {
     vi.spyOn(repositoryMock, 'findByEmail').mockResolvedValue(paramsMock)
 
     const result = await sut.create(paramsMock as TypeUser)
@@ -30,7 +30,7 @@ describe('UserService', () => {
     expect(result).toStrictEqual(expected)
   })
 
-  it('should be able to create a user', async () => {
+  it('Should be able to create a user.', async () => {
     vi.spyOn(repositoryMock, 'findByEmail').mockResolvedValue(false)
     vi.spyOn(repositoryMock, 'create').mockResolvedValue(paramsMock)
 

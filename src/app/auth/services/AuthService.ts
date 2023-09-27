@@ -10,7 +10,10 @@ class AuthService {
 
   async login(data: AuthDto) {
     if (!process.env.JWT_SECRET_KEY) {
-      return commonError('Environment configuration failed: secretKey not found.', 500)
+      return commonError(
+        'Environment configuration failed: secretKey not found.',
+        status.internalServerError
+      )
     }
 
     const user = await this.repository.findByEmail(data.email)

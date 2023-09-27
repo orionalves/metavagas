@@ -14,7 +14,7 @@ class UserRepository {
       if (error instanceof Error) {
         return commonError(error.message, status.internalServerError)
       }
-      return commonError('Database conection failed', status.internalServerError)
+      return commonError('Database conection failed.', status.internalServerError)
     }
   }
 
@@ -25,7 +25,7 @@ class UserRepository {
       if (error instanceof Error) {
         return commonError(error.message, status.internalServerError)
       }
-      return commonError('Database conection failed', status.internalServerError)
+      return commonError('Database conection failed.', status.internalServerError)
     }
   }
 
@@ -36,7 +36,7 @@ class UserRepository {
       if (error instanceof Error) {
         return commonError(error.message, status.internalServerError)
       }
-      return commonError('Database conection failed', status.internalServerError)
+      return commonError('Database conection failed.', status.internalServerError)
     }
   }
 
@@ -47,7 +47,7 @@ class UserRepository {
       if (error instanceof Error) {
         return commonError(error.message, status.internalServerError)
       }
-      return commonError('Database conection failed', status.internalServerError)
+      return commonError('Database conection failed.', status.internalServerError)
     }
   }
 }

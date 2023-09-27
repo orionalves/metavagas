@@ -6,29 +6,49 @@ const JobSchema = new Schema(
       type: String,
       required: true
     },
-    technologies: [
-      {
-        type: String
-      }
-    ],
-    location: {
+    company: {
+      type: String,
+      required: true
+    },
+    technologies: {
+      type: [String],
+      required: true
+    },
+    city: {
+      type: String,
+      required: true
+    },
+    site: {
       type: String,
       required: true
     },
     jobType: {
-      type: String
+      type: String,
+      required: true,
+      enum: ['remote', 'office', 'hybrid']
     },
     workRegime: {
-      type: String
+      type: String,
+      required: true,
+      enum: ['clt', 'pj']
     },
     companySize: {
-      type: String
+      type: String,
+      required: true,
+      enum: ['small', 'mid-level', 'large']
     },
     salary: {
-      type: Number
+      type: Number,
+      required: true
     },
     experienceLevel: {
-      type: String
+      type: String,
+      required: true,
+      enum: ['junior', 'mid-level', 'senior']
+    },
+    desciption: {
+      type: String,
+      require: true
     }
   },
   { timestamps: true }

@@ -2,6 +2,7 @@ import * as yup from 'yup'
 import { commonError } from '@/utils/commonError'
 import { UserDto } from '@/user/dtos/UserDto'
 import { getYupErrorMessage } from '@/utils/getYupErrorMessage'
+import { status } from '@/utils/status'
 
 type userSchemaValidationType = (data: UserDto) => Promise<
   | {
@@ -25,7 +26,7 @@ const userSchemaValidation: userSchemaValidationType = async data => {
     await userSchema.validate(data)
     return { error: false }
   } catch (error) {
-    return commonError(getYupErrorMessage(error), 400)
+    return commonError(getYupErrorMessage(error), status.badRequest)
   }
 }
 

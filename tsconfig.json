@@ -10,10 +10,8 @@
     "paths": {
       "@/*": [ "./src/*" ],
       "@/auth/*": [ "./src/app/auth/*" ],
-      "@/database/*": [ "./src/database/*" ],
-      "@/routes/*": [ "./src/routes/*" ],
+      "@/job/*": [ "./src/app/job/*" ],
       "@/user/*": [ "./src/app/user/*" ],
-      "@/utils/*": [ "./src/utils/*" ],
     },
     "types": [ "vitest/globals" ]
   }

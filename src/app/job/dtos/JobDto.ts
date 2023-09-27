@@ -1,12 +1,15 @@
 interface JobDto {
   jobTitle: string
+  company: string
   technologies: string[]
-  location: string
+  city: string
+  site: string
   jobType: 'remote' | 'office' | 'hybrid'
-  workRegime: string
-  companySize: string
+  workRegime: 'clt' | 'pj'
+  companySize: 'small' | 'mid-level' | 'large'
   salary: number
-  experienceLevel: string
+  experienceLevel: 'junior' | 'mid-level' | 'senior'
+  desciption: string
 }
 
 export { JobDto }
