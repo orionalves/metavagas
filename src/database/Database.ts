@@ -3,9 +3,14 @@ import { status } from '@/utils/status'
 import mongoose, { connect } from 'mongoose'
 
 class Database {
-  static async initialize() {
+  static async initializeMongoose() {
     if (!process.env.DATABASE_URL) {
-      return console.error('Database initialization failed: Database URL not found.')
+      return console.error(
+        commonError(
+          'Database initialization failed: Database URL not found.',
+          status.internalServerError
+        )
+      )
     }
     try {
       mongoose.connection.once('open', () => {

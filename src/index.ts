@@ -4,12 +4,18 @@ dotenv.config()
 import express from 'express'
 import { Database } from '@/database/Database'
 import { routes } from '@/routes/routes'
+import { commonError } from '@/utils/commonError'
+import { status } from '@/utils/status'
 
-Database.initialize()
+const port = process.env.API_PORT
+
+Database.initializeMongoose()
 
 const app = express()
 
 app.use(express.json())
 app.use(routes)
 
-app.listen(process.env.API_PORT, () => console.log('Server running at ' + process.env.API_PORT))
+port
+  ? app.listen(port, () => console.log('Server running at ' + port))
+  : console.error(commonError("Port isn't configured.", status.internalServerError))
