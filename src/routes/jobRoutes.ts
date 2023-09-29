@@ -3,6 +3,7 @@ import { jobController } from '@/job/JobModule'
 
 const jobRoutes = Router()
 
-jobRoutes.post('/', jobController.create.bind(jobController))
+const jobRoutesPost = jobRoutes.post('/', jobController.create.bind(jobController))
+const jobRoutesGet = jobRoutes.get('/', jobController.search.bind(jobController))
 
-export { jobRoutes }
+export { jobRoutesPost, jobRoutesGet }

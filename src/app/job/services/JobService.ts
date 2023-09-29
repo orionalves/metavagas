@@ -17,6 +17,11 @@ class JobService {
     return result
   }
 
+  async search(data: Partial<JobDto>) {
+    const result = await this.repository.search(data)
+    return result
+  }
+
   async index() {
     const result = await this.repository.findAll()
     return result

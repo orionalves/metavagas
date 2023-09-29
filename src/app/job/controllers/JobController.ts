@@ -21,6 +21,17 @@ class JobController {
 
     return response.status(status.created).json(result)
   }
+
+  async search(request: Request, response: Response) {
+    const { query } = request
+    const result = await this.service.search(query)
+
+    if ('error' in result) {
+      return response.status(result.status).json(result)
+    }
+
+    return response.status(status.created).json(result)
+  }
 }
 
 export { JobController }

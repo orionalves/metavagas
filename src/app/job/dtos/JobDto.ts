@@ -9,7 +9,7 @@ interface JobDto {
   companySize: 'small' | 'mid-level' | 'large'
   salary: number
   experienceLevel: 'junior' | 'mid-level' | 'senior'
-  desciption: string
+  description: string
 }
 
 export { JobDto }

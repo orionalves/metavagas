@@ -46,7 +46,7 @@ const JobSchema = new Schema(
       required: true,
       enum: ['junior', 'mid-level', 'senior']
     },
-    desciption: {
+    description: {
       type: String,
       require: true
     }
