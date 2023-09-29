@@ -52,37 +52,7 @@ class JobRepository {
   }
 
   async search(data: Partial<JobDto>) {
-    // const searchFields = [
-    //   'jobTitle',
-    //   'company',
-    //   'technologies',
-    //   'city',
-    //   'site',
-    //   'jobType',
-    //   'workRegime',
-    //   'companySize',
-    //   'salary',
-    //   'experienceLevel',
-    //   'description'
-    // ]
-
-    // const query = {
-    //   $or: searchFields.map(field => ({
-    //     [field]: { $regex: '.*' + data[field] + '.*', $options: 'i' }
-    //   }))
-    // }
-
-    // const searchFields = Object.keys(data);
-
-    // const query = {
-    //   $or: searchFields.map(field => ({
-    //     [field]: { $regex: '.*' + data[field] + '.*', $options: 'i' }
-    //   }))
-    // };
-
-    // return this.model.find(query)
     try {
-      // return this.model.find(data)
       return await this.model.find({
         $and: [
           { jobTitle: { $regex: '.*' + data.jobTitle + '.*', $options: 'i' } },
@@ -93,7 +63,7 @@ class JobRepository {
           { jobType: { $regex: '.*' + data.jobType + '.*', $options: 'i' } },
           { workRegime: { $regex: '.*' + data.workRegime + '.*', $options: 'i' } },
           { companySize: { $regex: '.*' + data.companySize + '.*', $options: 'i' } },
-          { salary: { $regex: '.*' + data.salary + '.*', $options: 'i' } },
+          { salary: data.salary },
           { experienceLevel: { $regex: '.*' + data.experienceLevel + '.*', $options: 'i' } },
           { description: { $regex: '.*' + data.description + '.*', $options: 'i' } }
         ]
