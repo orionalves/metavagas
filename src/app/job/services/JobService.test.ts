@@ -13,7 +13,7 @@ const repositoryMock = {
 }
 
 const paramsMock: JobDto = {
-  jobTitle: 'Teste',
+  position: 'Teste',
   company: 'Teste',
   technologies: ['teste1', 'teste2', 'teste3'],
   site: 'testavagas.com',
@@ -22,7 +22,7 @@ const paramsMock: JobDto = {
   companySize: 'large',
   salary: 2000,
   experienceLevel: 'junior',
-  desciption: 'Essa é uma vaga de teste',
+  description: 'Essa é uma vaga de teste',
   city: 'Teste'
 }
 

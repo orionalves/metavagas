@@ -3,7 +3,7 @@ import { status } from '@/utils/status'
 import mongoose, { connect } from 'mongoose'
 
 class Database {
-  static async initializeMongoose() {
+  static async initialize() {
     if (!process.env.DATABASE_URL) {
       return console.error(
         commonError(

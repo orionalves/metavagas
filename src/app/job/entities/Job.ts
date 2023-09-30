@@ -2,7 +2,7 @@ import { InferSchemaType, Schema, model } from 'mongoose'
 
 const JobSchema = new Schema(
   {
-    jobTitle: {
+    position: {
       type: String,
       required: true
     },

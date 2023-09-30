@@ -17,7 +17,7 @@ type jobSchemaValidationType = (data: JobDto) => Promise<
 
 const jobSchemaValidation: jobSchemaValidationType = async data => {
   const jobSchema = yup.object().shape({
-    jobTitle: yup.string().min(3).required('Job title is required.'),
+    position: yup.string().min(3).required('Job position is required.'),
     company: yup.string().min(2).required('Company is required.'),
     technologies: yup.array().of(yup.string()).required('Job technologies are required.'),
     city: yup.string().required('Job city is required.'),

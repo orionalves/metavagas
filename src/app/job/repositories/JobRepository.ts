@@ -1,6 +1,6 @@
 import { Model } from 'mongoose'
 import { TypeJob } from '@/job/entities/Job'
-import { JobDto } from '@/job/dtos/JobDto'
+import { JobDto, JobSearch } from '@/job/dtos/JobDto'
 import { commonError } from '@/utils/commonError'
 import { status } from '@/utils/status'
 
@@ -51,21 +51,18 @@ class JobRepository {
     }
   }
 
-  async search(data: Partial<JobDto>) {
+  async search(data: JobSearch) {
     try {
       return await this.model.find({
         $and: [
-          { jobTitle: { $regex: '.*' + data.jobTitle + '.*', $options: 'i' } },
-          { company: { $regex: '.*' + data.company + '.*', $options: 'i' } },
-          { technologies: { $regex: '.*' + data.technologies + '.*', $options: 'i' } },
-          { city: { $regex: '.*' + data.city + '.*', $options: 'i' } },
-          { site: { $regex: '.*' + data.site + '.*', $options: 'i' } },
-          { jobType: { $regex: '.*' + data.jobType + '.*', $options: 'i' } },
-          { workRegime: { $regex: '.*' + data.workRegime + '.*', $options: 'i' } },
-          { companySize: { $regex: '.*' + data.companySize + '.*', $options: 'i' } },
-          { salary: data.salary },
-          { experienceLevel: { $regex: '.*' + data.experienceLevel + '.*', $options: 'i' } },
-          { description: { $regex: '.*' + data.description + '.*', $options: 'i' } }
+          { position: { $regex: '.*' + data.position + '.*', $options: 'i' } },
+          { technologies: data.technologies },
+          { city: { $regex: data.city + '.*', $options: 'i' } },
+          { jobType: data.jobType },
+          { workRegime: data.workRegime },
+          { companySize: data.companySize },
+          { salary: { $gte: data.minSalary, $lte: data.maxSalary } },
+          { experienceLevel: data.experienceLevel }
         ]
       })
     } catch (error) {

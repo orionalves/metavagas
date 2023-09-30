@@ -10,7 +10,7 @@ routes.use('/signup', userRoutes)
 routes.use('/login', authRoutes)
 
 routes.use(AuthMiddleware.handler)
-routes.use('/jobs/search', jobRoutesGet)
-routes.use('/jobs/create', jobRoutesPost)
+routes.use('/jobs', jobRoutesGet)
+routes.use('/jobs', jobRoutesPost)
 
 export { routes }

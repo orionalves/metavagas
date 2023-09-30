@@ -9,7 +9,7 @@ import { status } from '@/utils/status'
 
 const port = process.env.API_PORT
 
-Database.initializeMongoose()
+Database.initialize()
 
 const app = express()
 

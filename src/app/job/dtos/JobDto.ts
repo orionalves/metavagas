@@ -1,5 +1,5 @@
 interface JobDto {
-  jobTitle: string
+  position: string
   company: string
   technologies: string[]
   city: string
@@ -12,4 +12,9 @@ interface JobDto {
   description: string
 }
 
-export { JobDto }
+interface JobSearch extends Partial<JobDto> {
+  minSalary?: number
+  maxSalary?: number
+}
+
+export { JobDto, JobSearch }
