@@ -3,7 +3,7 @@ interface JobDto {
   company: string
   technologies: string[]
   city: string
-  site: string
+  link: string
   jobType: 'remote' | 'office' | 'hybrid'
   workRegime: 'clt' | 'pj'
   companySize: 'small' | 'mid-level' | 'large'

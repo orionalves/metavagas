@@ -1,13 +1,13 @@
 import { Model } from 'mongoose'
-import { TypeJob } from '@/job/entities/Job'
-import { JobDto, JobSearch } from '@/job/dtos/JobDto'
+import { TypeCitySearch } from '@/citySearch/entities/CitySearch'
+import { CitySearchDto, CitySearchSearch } from '@/citySearch/dtos/CitySearchDto'
 import { commonError } from '@/utils/commonError'
 import { status } from '@/utils/status'
 
-class JobRepository {
-  constructor(private model: Model<TypeJob>) {}
+class CitySearchRepository {
+  constructor(private model: Model<TypeCitySearch>) {}
 
-  async findOne(data: JobDto) {
+  async findOne(data: CitySearchDto) {
     try {
       return this.model.findOne(data)
     } catch (error) {
@@ -18,7 +18,7 @@ class JobRepository {
     }
   }
 
-  async create(data: TypeJob) {
+  async create(data: TypeCitySearch) {
     try {
       return this.model.create(data)
     } catch (error) {
@@ -51,8 +51,8 @@ class JobRepository {
     }
   }
 
-  async search(data: JobSearch) {
-    // const query: JobSearch = {}
+  async search(data: CitySearchSearch) {
+    // const query: CitySearchSearch = {}
     // if (data.position) {
     //   query.position = { $regex: '.*' + data.position + '.*', $options: 'i' } as unknown as string
     // }
@@ -62,8 +62,8 @@ class JobRepository {
     // if (data.city) {
     //   query.city = { $regex: data.city + '.*', $options: 'i' } as unknown as string
     // }
-    // if (data.jobType) {
-    //   query.jobType = data.jobType
+    // if (data.citySearchType) {
+    //   query.citySearchType = data.citySearchType
     // }
     // if (data.workRegime) {
     //   query.workRegime = data.workRegime
@@ -83,7 +83,7 @@ class JobRepository {
           // position: { $regex: '.*' + data.position + '.*', $options: 'i' },
           // technologies: data.technologies,
           // city: { $regex: data.city + '.*', $options: 'i' },
-          // jobType: data.jobType,
+          // citySearchType: data.citySearchType,
           // workRegime: data.workRegime,
           // companySize: data.companySize,
           salary: { $gte: data.minSalary, $lte: data.maxSalary }
@@ -101,4 +101,4 @@ class JobRepository {
   }
 }
 
-export { JobRepository }
+export { CitySearchRepository }

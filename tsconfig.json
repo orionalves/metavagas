@@ -10,8 +10,12 @@
     "paths": {
       "@/*": [ "./src/*" ],
       "@/auth/*": [ "./src/app/auth/*" ],
+      "@/city/*": [ "./src/app/city/*" ],
+      "@/citySearch/*": [ "./src/app/citySearch/*" ],
       "@/job/*": [ "./src/app/job/*" ],
       "@/user/*": [ "./src/app/user/*" ],
+      "@/technology/*": [ "./src/app/technology/*" ],
+      "@/techSearch/*": [ "./src/app/techSearch/*" ],
     },
     "types": [ "vitest/globals" ]
   }

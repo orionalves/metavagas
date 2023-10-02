@@ -1,7 +1,7 @@
 import { commonError } from '@/utils/commonError'
 import { JobRepository } from '@/job/repositories/JobRepository'
 import { status } from '@/utils/status'
-import { JobDto } from '@/job/dtos/JobDto'
+import { JobDto, JobSearch } from '@/job/dtos/JobDto'
 import { TypeJob } from '@/job/entities/Job'
 
 class JobService {
@@ -17,7 +17,10 @@ class JobService {
     return result
   }
 
-  async search(data: Partial<JobDto>) {
+  async search(data: JobSearch) {
+    if (data.technologies) {
+      await this.repository
+    }
     const result = await this.repository.search(data)
     return result
   }

@@ -18,7 +18,7 @@ const JobSchema = new Schema(
       type: String,
       required: true
     },
-    site: {
+    link: {
       type: String,
       required: true
     },

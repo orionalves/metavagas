@@ -21,7 +21,7 @@ const jobSchemaValidation: jobSchemaValidationType = async data => {
     company: yup.string().min(2).required('Company is required.'),
     technologies: yup.array().of(yup.string()).required('Job technologies are required.'),
     city: yup.string().required('Job city is required.'),
-    site: yup.string().required('Job site is required.'),
+    link: yup.string().required('Job link is required.'),
     jobType: yup.string().oneOf(['remote', 'office', 'hybrid']).required('Job type is required.'),
     workRegime: yup.string().oneOf(['clt', 'pj']).required('Work regime is required.'),
     companySize: yup
