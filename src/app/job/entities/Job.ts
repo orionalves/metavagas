@@ -10,12 +10,16 @@ const JobSchema = new Schema(
       type: String,
       required: true
     },
-    technologies: {
-      type: [String],
-      required: true
-    },
+    technologies: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Technology',
+        required: true
+      }
+    ],
     city: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: 'City',
       required: true
     },
     link: {

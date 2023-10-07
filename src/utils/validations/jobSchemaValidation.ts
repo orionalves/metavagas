@@ -33,7 +33,7 @@ const jobSchemaValidation: jobSchemaValidationType = async data => {
       .string()
       .oneOf(['junior', 'mid-level', 'senior'])
       .required('Experience level is required.'),
-    desciption: yup.string().required('Description is required.')
+    description: yup.string().required('Description is required.')
   })
 
   try {

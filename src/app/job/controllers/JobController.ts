@@ -12,7 +12,6 @@ class JobController {
     if (bodyIsValid.error) {
       return response.status(bodyIsValid.status).json(bodyIsValid)
     }
-
     const result = await this.service.create(body)
 
     if ('error' in result) {

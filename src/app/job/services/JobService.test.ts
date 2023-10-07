@@ -4,6 +4,8 @@ import { JobRepository } from '@/job/repositories/JobRepository'
 import { JobDto } from '@/job/dtos/JobDto'
 import { commonError } from '@/utils/commonError'
 import { status } from '@/utils/status'
+import { TechnologyRepository } from '@/app/technology/repositories/TechnologyRepository'
+import { CityRepository } from '@/app/city/repositories/CityRepository'
 
 const repositoryMock = {
   findOne: vi.fn(),
@@ -11,12 +13,18 @@ const repositoryMock = {
   findById: vi.fn(),
   findAll: vi.fn()
 }
+const technologyRepositoryMock = {
+  returnId: vi.fn()
+}
+const cityRepositoryMock = {
+  returnId: vi.fn()
+}
 
 const paramsMock: JobDto = {
   position: 'Teste',
   company: 'Teste',
   technologies: ['teste1', 'teste2', 'teste3'],
-  site: 'testavagas.com',
+  link: 'testavagas.com',
   jobType: 'office',
   workRegime: 'pj',
   companySize: 'large',
@@ -26,9 +34,32 @@ const paramsMock: JobDto = {
   city: 'Teste'
 }
 
-const sut = new JobService(repositoryMock as unknown as JobRepository)
+const sut = new JobService(
+  repositoryMock as unknown as JobRepository,
+  technologyRepositoryMock as unknown as TechnologyRepository,
+  cityRepositoryMock as unknown as CityRepository
+)
 
 describe('JobService', () => {
+  it("Should be able to return an error if any technogies don't exists.", async () => {
+    vi.spyOn(technologyRepositoryMock, 'returnId').mockResolvedValue(null)
+
+    const result = await sut.create(paramsMock)
+    const expected = commonError("We don't have any technology.", status.badRequest)
+
+    expect(result).toStrictEqual(expected)
+  })
+
+  it("Should be able to return an error if city don't exists.", async () => {
+    vi.spyOn(technologyRepositoryMock, 'returnId').mockResolvedValue(paramsMock.technologies)
+    vi.spyOn(cityRepositoryMock, 'returnId').mockResolvedValue(null)
+
+    const result = await sut.create(paramsMock)
+    const expected = commonError("We don't have this city.", status.badRequest)
+
+    expect(result).toStrictEqual(expected)
+  })
+
   it('Should be able to return an error if job already exists.', async () => {
     vi.spyOn(repositoryMock, 'findOne').mockResolvedValue(paramsMock)
 

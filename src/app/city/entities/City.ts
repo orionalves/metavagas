@@ -6,6 +6,12 @@ const CitySchema = new Schema(
       type: String,
       required: true,
       minLength: 2
+    },
+    uf: {
+      type: String,
+      required: true,
+      minLength: 2,
+      maxLength: 2
     }
   },
   { timestamps: true }

@@ -4,8 +4,7 @@ const TechnologySchema = new Schema(
   {
     name: {
       type: String,
-      required: true,
-      minLength: 2
+      required: true
     }
   },
   { timestamps: true }

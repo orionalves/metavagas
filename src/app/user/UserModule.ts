@@ -1,7 +1,7 @@
-import { UserRepository } from '@/user/repositories/UserRepository.js'
-import { UserService } from '@/user/services/UserService.js'
-import { UserController } from '@/user/controllers/UserController.js'
-import { User } from '@/user/entities/User.js'
+import { UserRepository } from '@/user/repositories/UserRepository'
+import { UserService } from '@/user/services/UserService'
+import { UserController } from '@/user/controllers/UserController'
+import { User } from '@/user/entities/User'
 
 class UserModule {
   static getInstance() {

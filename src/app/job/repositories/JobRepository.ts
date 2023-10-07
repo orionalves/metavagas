@@ -18,7 +18,7 @@ class JobRepository {
     }
   }
 
-  async create(data: TypeJob) {
+  async create(data: JobDto) {
     try {
       return this.model.create(data)
     } catch (error) {
