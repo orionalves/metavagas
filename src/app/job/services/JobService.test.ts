@@ -51,7 +51,7 @@ describe('JobService', () => {
   })
 
   it("Should be able to return an error if city don't exists.", async () => {
-    vi.spyOn(technologyRepositoryMock, 'returnId').mockResolvedValue(paramsMock.technologies)
+    vi.spyOn(technologyRepositoryMock, 'returnId').mockResolvedValue('string')
     vi.spyOn(cityRepositoryMock, 'returnId').mockResolvedValue(null)
 
     const result = await sut.create(paramsMock)
@@ -61,7 +61,9 @@ describe('JobService', () => {
   })
 
   it('Should be able to return an error if job already exists.', async () => {
-    vi.spyOn(repositoryMock, 'findOne').mockResolvedValue(paramsMock)
+    vi.spyOn(technologyRepositoryMock, 'returnId').mockResolvedValue('string')
+    vi.spyOn(cityRepositoryMock, 'returnId').mockResolvedValue('string')
+    vi.spyOn(repositoryMock, 'findOne').mockResolvedValue(true)
 
     const result = await sut.create(paramsMock)
     const expected = commonError('This job already exist.', status.badRequest)
@@ -70,6 +72,8 @@ describe('JobService', () => {
   })
 
   it('Should be able to create a job.', async () => {
+    vi.spyOn(technologyRepositoryMock, 'returnId').mockResolvedValue('string')
+    vi.spyOn(cityRepositoryMock, 'returnId').mockResolvedValue('string')
     vi.spyOn(repositoryMock, 'findOne').mockResolvedValue(false)
     vi.spyOn(repositoryMock, 'create').mockResolvedValue(paramsMock)
 

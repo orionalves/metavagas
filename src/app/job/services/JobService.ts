@@ -16,6 +16,7 @@ class JobService {
     const technologies = await Promise.all(
       data.technologies.map(name => this.technologyRepository.returnId({ name }))
     )
+
     const technologiesExists = technologies.some(item => typeof item === 'string')
     if (technologies.includes(null) || !technologiesExists) {
       return commonError("We don't have any technology.", status.badRequest)
