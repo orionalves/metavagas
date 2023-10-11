@@ -17,9 +17,9 @@ class TechSearchRepository {
     }
   }
 
-  async findOne(name: string) {
+  async findTechnology(technology: string) {
     try {
-      return this.model.findOne({ name })
+      return this.model.findOne({ technology })
     } catch (error) {
       if (error instanceof Error) {
         return commonError(error.message, status.internalServerError)
