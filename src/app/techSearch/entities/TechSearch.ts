@@ -3,13 +3,23 @@ import { InferSchemaType, Schema, model } from 'mongoose'
 const TechSearchSchema = new Schema(
   {
     technology: {
-      type: String,
-      required: true
+      type: Schema.Types.ObjectId,
+      ref: 'Technology',
+      required: true,
+      count: {
+        type: Number,
+        default: 0
+      }
     },
     cities: [
       {
-        type: String,
-        default: undefined
+        type: Schema.Types.ObjectId,
+        ref: 'City',
+        required: true,
+        count: {
+          type: Number,
+          default: 0
+        }
       }
     ]
   },
