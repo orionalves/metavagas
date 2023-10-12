@@ -1,10 +1,12 @@
 import * as yup from 'yup'
-import { commonError } from '@/utils/commonError'
+import { commonReturn } from '@/utils/commonReturn'
 import { getYupErrorMessage } from '@/utils/getYupErrorMessage'
 import { AuthDto } from '@/auth/dtos/AuthDto'
 import { status } from '@/utils/status'
 
-type loginSchemaValidationType = (data: AuthDto) => Promise<
+const loginSchemaValidation = async (
+  data: AuthDto
+): Promise<
   | {
       error: true
       message: string
@@ -13,19 +15,21 @@ type loginSchemaValidationType = (data: AuthDto) => Promise<
   | {
       error: false
     }
->
-
-const loginSchemaValidation: loginSchemaValidationType = async data => {
+> => {
   const loginSchema = yup.object().shape({
-    email: yup.string().email('Needs to be email').min(6).required('Email is required'),
-    password: yup.string().min(8).required('Password is required')
+    email: yup
+      .string()
+      .email('❌ Problem: Needs to be email')
+      .min(6)
+      .required('❌ Problem: Email is required'),
+    password: yup.string().min(8).required('❌ Problem: Password is required')
   })
 
   try {
     await loginSchema.validate(data)
     return { error: false }
   } catch (error) {
-    return commonError(getYupErrorMessage(error), status.badRequest)
+    return commonReturn(true, getYupErrorMessage(error), status.badRequest)
   }
 }
 

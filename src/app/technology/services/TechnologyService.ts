@@ -17,20 +17,6 @@ class TechnologyService {
     return result
   }
 
-  async returnId(data: string) {
-    // const tech = data.split(',')
-    // async returnId(data: TechnologyDto) {
-    //   const tech = data.name.split(',')
-    // if (data.technologies) {
-    //   await this.repository
-    // }
-
-    const result = await this.repository.returnId({ name: data })
-    // const result = await Promise.all(tech.map(name => this.repository.returnId({ name })))
-    // const result = await Promise.all(tech.map(item => this.repository.returnId({ name: item })))
-    return result
-  }
-
   async index() {
     const result = await this.repository.findAll()
     return result

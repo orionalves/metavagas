@@ -1,20 +1,25 @@
 import { Model } from 'mongoose'
 import { TypeTechnology } from '@/technology/entities/Technology'
 import { TechnologyDto } from '@/technology/dtos/TechnologyDto'
-import { commonError } from '@/utils/commonError'
 import { status } from '@/utils/status'
+import { commonReturn } from '@/utils/commonReturn'
 
 class TechnologyRepository {
   constructor(private model: Model<TypeTechnology>) {}
 
   async create(data: TypeTechnology) {
     try {
-      return this.model.create(data)
+      this.model.create(data)
+      return commonReturn(false, '✔️ Ok: Technology created!', status.created)
     } catch (error) {
       if (error instanceof Error) {
-        return commonError(error.message, status.internalServerError)
+        return commonReturn(true, error.message, status.internalServerError)
       }
-      return commonError('Database conection failed.', status.internalServerError)
+      return commonReturn(
+        true,
+        '❌ Problem: Database conection failed.',
+        status.internalServerError
+      )
     }
   }
 
@@ -23,9 +28,13 @@ class TechnologyRepository {
       return this.model.findOne(data)
     } catch (error) {
       if (error instanceof Error) {
-        return commonError(error.message, status.internalServerError)
+        return commonReturn(true, error.message, status.internalServerError)
       }
-      return commonError('Database conection failed.', status.internalServerError)
+      return commonReturn(
+        true,
+        '❌ Problem: Database conection failed.',
+        status.internalServerError
+      )
     }
   }
 
@@ -33,16 +42,19 @@ class TechnologyRepository {
     try {
       const result = await this.model.findOne(data).select('_id')
       if (result && result._id) {
-        return result._id.toString() // Converte o _id para uma string
+        return result._id.toString()
       } else {
-        // Retornar um valor padrão ou lançar uma exceção se desejar tratar quando nenhum documento for encontrado.
-        return null // ou throw new Error('Documento não encontrado');
+        return null
       }
     } catch (error) {
       if (error instanceof Error) {
-        return commonError(error.message, status.badRequest)
+        return commonReturn(true, error.message, status.internalServerError)
       }
-      return commonError('Erro na conexão com o banco de dados.', status.internalServerError)
+      return commonReturn(
+        true,
+        '❌ Problem: Database conection failed.',
+        status.internalServerError
+      )
     }
   }
 
@@ -51,9 +63,13 @@ class TechnologyRepository {
       return this.model.findById(id)
     } catch (error) {
       if (error instanceof Error) {
-        return commonError(error.message, status.internalServerError)
+        return commonReturn(true, error.message, status.internalServerError)
       }
-      return commonError('Database conection failed.', status.internalServerError)
+      return commonReturn(
+        true,
+        '❌ Problem: Database conection failed.',
+        status.internalServerError
+      )
     }
   }
 
@@ -62,9 +78,13 @@ class TechnologyRepository {
       return this.model.find()
     } catch (error) {
       if (error instanceof Error) {
-        return commonError(error.message, status.internalServerError)
+        return commonReturn(true, error.message, status.internalServerError)
       }
-      return commonError('Database conection failed.', status.internalServerError)
+      return commonReturn(
+        true,
+        '❌ Problem: Database conection failed.',
+        status.internalServerError
+      )
     }
   }
 }

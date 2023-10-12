@@ -1,10 +1,12 @@
 import * as yup from 'yup'
-import { commonError } from '@/utils/commonError'
+import { commonReturn } from '@/utils/commonReturn'
 import { CityDto } from '@/city/dtos/CityDto'
 import { getYupErrorMessage } from '@/utils/getYupErrorMessage'
 import { status } from '@/utils/status'
 
-type citySchemaValidationType = (data: CityDto) => Promise<
+const citySchemaValidation = async (
+  data: CityDto
+): Promise<
   | {
       error: true
       message: string
@@ -13,19 +15,17 @@ type citySchemaValidationType = (data: CityDto) => Promise<
   | {
       error: false
     }
->
-
-const citySchemaValidation: citySchemaValidationType = async data => {
+> => {
   const citySchema = yup.object().shape({
-    name: yup.string().min(2).required('Name is required.'),
-    uf: yup.string().min(2).max(2).required('UF is required.')
+    name: yup.string().min(2).required('❌ Problem: Name is required.'),
+    uf: yup.string().min(2).max(2).required('❌ Problem: UF is required.')
   })
 
   try {
     await citySchema.validate(data)
     return { error: false }
   } catch (error) {
-    return commonError(getYupErrorMessage(error), status.badRequest)
+    return commonReturn(true, getYupErrorMessage(error), status.badRequest)
   }
 }
 

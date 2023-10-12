@@ -1,10 +1,12 @@
 import * as yup from 'yup'
-import { commonError } from '@/utils/commonError'
+import { commonReturn } from '@/utils/commonReturn'
 import { TechSearchDto } from '@/techSearch/dtos/TechSearchDto'
 import { getYupErrorMessage } from '@/utils/getYupErrorMessage'
 import { status } from '@/utils/status'
 
-type techSearchValidationType = (data: TechSearchDto) => Promise<
+const techSearchValidation = async (
+  data: TechSearchDto
+): Promise<
   | {
       error: true
       message: string
@@ -13,9 +15,7 @@ type techSearchValidationType = (data: TechSearchDto) => Promise<
   | {
       error: false
     }
->
-
-const techSearchValidation: techSearchValidationType = async data => {
+> => {
   const TechSearchSchema = yup.object().shape({
     technology: yup.string().min(2).required(),
     cities: yup.array().of(yup.string()).min(2)
@@ -25,7 +25,7 @@ const techSearchValidation: techSearchValidationType = async data => {
     await TechSearchSchema.validate(data)
     return { error: false }
   } catch (error) {
-    return commonError(getYupErrorMessage(error), status.badRequest)
+    return commonReturn(true, getYupErrorMessage(error), status.badRequest)
   }
 }
 
