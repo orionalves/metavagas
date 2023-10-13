@@ -13,7 +13,7 @@ class TechnologyRepository {
       return commonReturn(false, '✔️ Ok: Technology created!', status.created)
     } catch (error) {
       if (error instanceof Error) {
-        return commonReturn(true, error.message, status.internalServerError)
+        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
       }
       return commonReturn(
         true,
@@ -28,7 +28,7 @@ class TechnologyRepository {
       return this.model.findOne(data)
     } catch (error) {
       if (error instanceof Error) {
-        return commonReturn(true, error.message, status.internalServerError)
+        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
       }
       return commonReturn(
         true,
@@ -48,7 +48,7 @@ class TechnologyRepository {
       }
     } catch (error) {
       if (error instanceof Error) {
-        return commonReturn(true, error.message, status.internalServerError)
+        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
       }
       return commonReturn(
         true,
@@ -63,7 +63,7 @@ class TechnologyRepository {
       return this.model.findById(id)
     } catch (error) {
       if (error instanceof Error) {
-        return commonReturn(true, error.message, status.internalServerError)
+        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
       }
       return commonReturn(
         true,
@@ -78,7 +78,7 @@ class TechnologyRepository {
       return this.model.find()
     } catch (error) {
       if (error instanceof Error) {
-        return commonReturn(true, error.message, status.internalServerError)
+        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
       }
       return commonReturn(
         true,

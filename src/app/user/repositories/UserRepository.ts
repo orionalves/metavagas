@@ -12,7 +12,7 @@ class UserRepository {
       return this.model.create(data)
     } catch (error) {
       if (error instanceof Error) {
-        return commonError(error.message, status.internalServerError)
+        return commonError(`❌ Problem: ${error.message}`, status.internalServerError)
       }
       return commonError('Database conection failed.', status.internalServerError)
     }
@@ -23,7 +23,7 @@ class UserRepository {
       return this.model.findById(id)
     } catch (error) {
       if (error instanceof Error) {
-        return commonError(error.message, status.internalServerError)
+        return commonError(`❌ Problem: ${error.message}`, status.internalServerError)
       }
       return commonError('Database conection failed.', status.internalServerError)
     }
@@ -34,7 +34,7 @@ class UserRepository {
       return this.model.findOne({ email })
     } catch (error) {
       if (error instanceof Error) {
-        return commonError(error.message, status.internalServerError)
+        return commonError(`❌ Problem: ${error.message}`, status.internalServerError)
       }
       return commonError('Database conection failed.', status.internalServerError)
     }
@@ -45,7 +45,7 @@ class UserRepository {
       return this.model.find().populate('')
     } catch (error) {
       if (error instanceof Error) {
-        return commonError(error.message, status.internalServerError)
+        return commonError(`❌ Problem: ${error.message}`, status.internalServerError)
       }
       return commonError('Database conection failed.', status.internalServerError)
     }

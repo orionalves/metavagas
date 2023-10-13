@@ -25,7 +25,7 @@ const techSearchValidation = async (
     await TechSearchSchema.validate(data)
     return { error: false }
   } catch (error) {
-    return commonReturn(true, getYupErrorMessage(error), status.badRequest)
+    return commonReturn(true, getYupErrorMessage(`❌ ${error}`), status.badRequest)
   }
 }
 

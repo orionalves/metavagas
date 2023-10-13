@@ -49,7 +49,7 @@ const jobSchemaValidation = async (
     await jobSchema.validate(data)
     return { error: false }
   } catch (error) {
-    return commonReturn(true, getYupErrorMessage(error), status.badRequest)
+    return commonReturn(true, getYupErrorMessage(`❌ ${error}`), status.badRequest)
   }
 }
 

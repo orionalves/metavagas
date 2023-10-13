@@ -16,7 +16,7 @@ class JobRepository {
         .populate({ path: 'city', select: 'name uf -_id' })
     } catch (error) {
       if (error instanceof Error) {
-        return commonReturn(true, error.message, status.internalServerError)
+        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
       }
       return commonReturn(
         true,
@@ -32,7 +32,7 @@ class JobRepository {
       return commonReturn(false, '✔️ Ok: Job created!', status.created)
     } catch (error) {
       if (error instanceof Error) {
-        return commonReturn(true, error.message, status.internalServerError)
+        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
       }
       return commonReturn(
         true,
@@ -50,7 +50,7 @@ class JobRepository {
         .populate({ path: 'city', select: 'name uf -_id' })
     } catch (error) {
       if (error instanceof Error) {
-        return commonReturn(true, error.message, status.internalServerError)
+        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
       }
       return commonReturn(
         true,
@@ -68,7 +68,7 @@ class JobRepository {
         .populate({ path: 'city', select: 'name uf -_id' })
     } catch (error) {
       if (error instanceof Error) {
-        return commonReturn(true, error.message, status.internalServerError)
+        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
       }
       return commonReturn(
         true,
@@ -81,25 +81,26 @@ class JobRepository {
   async search(data: JobSearch) {
     try {
       return await this.model
-        .find(
-          {
-            position: { $regex: '^.*' + data.position + '.*$', $options: 'i' },
-            technologies: data.technologies,
-            city: { $regex: data.city + '.*$', $options: 'i' },
-            jobType: data.jobType,
-            workRegime: data.workRegime,
-            companySize: data.companySize,
-            salary: { $gte: data.minSalary, $lte: data.maxSalary },
-            // $and: [{ salary: { $gte: data.minSalary, $lte: data.maxSalary } }]
-            experienceLevel: data.experienceLevel
+        .find({
+          ...(data.position
+            ? { position: { $regex: '.*' + data.position + '.*', $options: 'i' } }
+            : {}),
+          ...(data.technologies ? { technologies: { $in: data.technologies } } : {}),
+          ...(data.city ? { city: data.city } : {}),
+          ...(data.jobType ? { jobType: data.jobType } : {}),
+          ...(data.workRegime ? { workRegime: data.workRegime } : {}),
+          ...(data.experienceLevel ? { experienceLevel: data.experienceLevel } : {}),
+          salary: {
+            ...(data.minSalary ? { $gte: data.minSalary } : {}),
+            ...(data.maxSalary ? { $lte: data.maxSalary } : {}),
+            ...(!(data.minSalary && data.maxSalary) ? { $exists: true } : {})
           }
-          // query
-        )
+        })
         .populate({ path: 'technologies', select: 'name -_id' })
         .populate({ path: 'city', select: 'name uf -_id' })
     } catch (error) {
       if (error instanceof Error) {
-        return commonReturn(true, error.message, status.internalServerError)
+        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
       }
       return commonReturn(
         true,

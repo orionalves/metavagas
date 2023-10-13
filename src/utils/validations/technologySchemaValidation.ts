@@ -24,7 +24,7 @@ const technologySchemaValidation = async (
     await technologySchema.validate(data)
     return { error: false }
   } catch (error) {
-    return commonReturn(true, getYupErrorMessage(error), status.badRequest)
+    return commonReturn(true, getYupErrorMessage(`❌ ${error}`), status.badRequest)
   }
 }
 

@@ -13,7 +13,7 @@ class CityRepository {
       return commonReturn(false, '✔️ Ok: City created!', status.created)
     } catch (error) {
       if (error instanceof Error) {
-        return commonReturn(true, error.message, status.internalServerError)
+        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
       }
       return commonReturn(
         true,
@@ -28,7 +28,7 @@ class CityRepository {
       return this.model.findOne(data)
     } catch (error) {
       if (error instanceof Error) {
-        return commonReturn(true, error.message, status.internalServerError)
+        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
       }
       return commonReturn(
         true,
@@ -43,7 +43,7 @@ class CityRepository {
       return this.model.findById(id)
     } catch (error) {
       if (error instanceof Error) {
-        return commonReturn(true, error.message, status.internalServerError)
+        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
       }
       return commonReturn(
         true,
@@ -62,7 +62,7 @@ class CityRepository {
       return result._id.toString()
     } catch (error) {
       if (error instanceof Error) {
-        return commonReturn(true, error.message, status.internalServerError)
+        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
       }
       return commonReturn(
         true,
@@ -77,7 +77,7 @@ class CityRepository {
       return this.model.find()
     } catch (error) {
       if (error instanceof Error) {
-        return commonReturn(true, error.message, status.internalServerError)
+        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
       }
       return commonReturn(
         true,

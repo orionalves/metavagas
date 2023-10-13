@@ -2,17 +2,18 @@ import { Model } from 'mongoose'
 import { TypeTechSearch } from '@/techSearch/entities/TechSearch'
 import { status } from '@/utils/status'
 import { commonReturn } from '@/utils/commonReturn'
+import { TechSearchDto } from '@/techSearch/dtos/TechSearchDto'
 
 class TechSearchRepository {
   constructor(private model: Model<TypeTechSearch>) {}
 
-  async create(data: TypeTechSearch) {
+  async create(data: TechSearchDto) {
     try {
       await this.model.create(data)
       return commonReturn(false, '✔️ Ok: TechSearch salved!', status.created)
     } catch (error) {
       if (error instanceof Error) {
-        return commonReturn(true, error.message, status.internalServerError)
+        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
       }
       return commonReturn(
         true,
@@ -22,12 +23,15 @@ class TechSearchRepository {
     }
   }
 
-  async findTechnology(technology: string) {
+  async findByTechnology(technology: string) {
     try {
-      return this.model.findOne({ technology }).populate('Technology').populate('City')
+      return this.model
+        .findOne({ technology })
+        .populate({ path: 'technology', select: 'name -_id' })
+        .populate({ path: 'cities', select: 'name uf -_id' })
     } catch (error) {
       if (error instanceof Error) {
-        return commonReturn(true, error.message, status.internalServerError)
+        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
       }
       return commonReturn(
         true,
@@ -39,10 +43,10 @@ class TechSearchRepository {
 
   async findById(id: string) {
     try {
-      return this.model.findById(id).populate('Technology').populate('City')
+      return this.model.findById(id).populate('technology').populate('cities')
     } catch (error) {
       if (error instanceof Error) {
-        return commonReturn(true, error.message, status.internalServerError)
+        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
       }
       return commonReturn(
         true,
@@ -54,10 +58,13 @@ class TechSearchRepository {
 
   async findAll() {
     try {
-      return this.model.find().populate('Technology').populate('City')
+      return this.model
+        .find()
+        .populate({ path: 'technology', select: 'name -_id' })
+        .populate({ path: 'cities', select: 'name uf -_id' })
     } catch (error) {
       if (error instanceof Error) {
-        return commonReturn(true, error.message, status.internalServerError)
+        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
       }
       return commonReturn(
         true,
@@ -72,7 +79,7 @@ class TechSearchRepository {
       return this.model.findByIdAndUpdate(id, { $inc: { count: 1 } })
     } catch (error) {
       if (error instanceof Error) {
-        return commonReturn(true, error.message, status.internalServerError)
+        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
       }
       return commonReturn(
         true,
