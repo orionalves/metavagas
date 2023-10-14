@@ -5,17 +5,15 @@ const TechSearchSchema = new Schema(
     technology: {
       type: Schema.Types.ObjectId,
       ref: 'Technology',
-      required: true,
-      count: {
-        type: Number,
-        default: 0
-      }
+      required: true
+    },
+    count: {
+      type: Number,
+      default: 0
     },
     cities: [
       {
-        type: Schema.Types.ObjectId,
-        ref: 'City',
-        required: true,
+        city: { type: Schema.Types.ObjectId, ref: 'City' },
         count: {
           type: Number,
           default: 0

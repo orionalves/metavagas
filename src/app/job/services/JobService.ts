@@ -44,6 +44,7 @@ class JobService {
   }
 
   async search(data: JobSearch) {
+    //Chamar serviço dentro de outro pode ser uma opção:
     if (data.city && data.technologies) {
       const city = await this.cityRepository.returnId(data.city)
 
@@ -58,6 +59,16 @@ class JobService {
 
       if (typeof city !== 'string') {
         data = { ...data, technologies: technologies as string[] }
+        if (data.technologies) {
+          data.technologies.forEach(async technology => {
+            const technologyExists = await this.techSearchRepository.findByTechnology(technology)
+            if (!technologyExists) {
+              const newTechnology = { technology }
+              await this.techSearchRepository.create(newTechnology)
+            }
+            await this.techSearchRepository.incrementsTechnologyCount(technology)
+          })
+        }
         return await this.repository.search(data)
       }
 
@@ -70,17 +81,15 @@ class JobService {
       if (data.technologies) {
         data.technologies.forEach(async technology => {
           const technologyExists = await this.techSearchRepository.findByTechnology(technology)
-          if (!technologyExists && data.city) {
-            const newTechnology = { technology, cities: [data.city] }
+          if (!technologyExists) {
+            const newTechnology = { technology, cities: [{ city: data.city }] }
             await this.techSearchRepository.create(newTechnology)
           }
-          console.log(technologyExists)
-          console.log('Acrescentar 1 número')
+          const technologyWithCity = { technology, 'cities.city': data.city }
+          await this.techSearchRepository.incrementsTechnologyCount(technology)
+          await this.techSearchRepository.incrementsCityCount(technologyWithCity)
         })
       }
-      // data.technologies.forEach(technology => {
-      //   console.log(`{ technology: '${technology}', city: '${data.city}' }`)
-      // })
 
       return await this.repository.search(data)
     }

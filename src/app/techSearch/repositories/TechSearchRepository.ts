@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import { Model } from 'mongoose'
 import { TypeTechSearch } from '@/techSearch/entities/TechSearch'
 import { status } from '@/utils/status'
@@ -28,7 +29,39 @@ class TechSearchRepository {
       return this.model
         .findOne({ technology })
         .populate({ path: 'technology', select: 'name -_id' })
-        .populate({ path: 'cities', select: 'name uf -_id' })
+        .populate({ path: 'cities.city', model: 'City', select: 'name uf -_id' })
+    } catch (error) {
+      if (error instanceof Error) {
+        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
+      }
+      return commonReturn(
+        true,
+        '❌ Problem: Database conection failed.',
+        status.internalServerError
+      )
+    }
+  }
+
+  async incrementsTechnologyCount(technology: string) {
+    const update = { $inc: { count: 1 } }
+    try {
+      return this.model.findOneAndUpdate({ technology }, update, { new: true })
+    } catch (error) {
+      if (error instanceof Error) {
+        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
+      }
+      return commonReturn(
+        true,
+        '❌ Problem: Database conection failed.',
+        status.internalServerError
+      )
+    }
+  }
+
+  async incrementsCityCount(data: TechSearchDto) {
+    const update = { $inc: { 'cities.$.count': 1 } }
+    try {
+      return this.model.findOneAndUpdate(data, update, { new: true })
     } catch (error) {
       if (error instanceof Error) {
         return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)

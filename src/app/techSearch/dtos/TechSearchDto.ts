@@ -1,6 +1,6 @@
 interface TechSearchDto {
   technology: string
-  cities?: string[]
+  cities?: { city?: string }[]
 }
 
 export { TechSearchDto }
