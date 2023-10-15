@@ -25,7 +25,7 @@ class TechnologyRepository {
 
   async findOne(data: TechnologyDto) {
     try {
-      return this.model.findOne(data)
+      return this.model.findOne(data).select('name _id')
     } catch (error) {
       if (error instanceof Error) {
         return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
@@ -60,7 +60,7 @@ class TechnologyRepository {
 
   async findById(id: string) {
     try {
-      return this.model.findById(id)
+      return this.model.findById(id).select('name')
     } catch (error) {
       if (error instanceof Error) {
         return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
@@ -75,7 +75,7 @@ class TechnologyRepository {
 
   async findAll() {
     try {
-      return this.model.find()
+      return this.model.find().select('name _id').sort({ name: 1 })
     } catch (error) {
       if (error instanceof Error) {
         return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)

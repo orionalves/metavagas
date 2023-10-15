@@ -25,7 +25,7 @@ class CityRepository {
 
   async findOne(data: CityDto) {
     try {
-      return this.model.findOne(data)
+      return this.model.findOne(data).select('name uf _id')
     } catch (error) {
       if (error instanceof Error) {
         return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
@@ -40,7 +40,7 @@ class CityRepository {
 
   async findById(id: string) {
     try {
-      return this.model.findById(id)
+      return this.model.findById(id).select('name uf')
     } catch (error) {
       if (error instanceof Error) {
         return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
@@ -74,7 +74,7 @@ class CityRepository {
 
   async findAll() {
     try {
-      return this.model.find()
+      return this.model.find().select('name uf _id').sort({ uf: 1 })
     } catch (error) {
       if (error instanceof Error) {
         return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)

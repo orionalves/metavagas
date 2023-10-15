@@ -1,5 +1,5 @@
 /* eslint-disable max-lines */
-import { Model } from 'mongoose'
+import mongoose, { Model } from 'mongoose'
 import { TypeTechSearch } from '@/techSearch/entities/TechSearch'
 import { status } from '@/utils/status'
 import { commonReturn } from '@/utils/commonReturn'
@@ -10,17 +10,22 @@ class TechSearchRepository {
 
   async create(data: TechSearchDto) {
     try {
-      await this.model.create(data)
-      return commonReturn(false, '✔️ Ok: TechSearch salved!', status.created)
+      return await this.model.create(data)
     } catch (error) {
       if (error instanceof Error) {
         return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
       }
-      return commonReturn(
-        true,
-        '❌ Problem: Database conection failed.',
-        status.internalServerError
-      )
+    }
+  }
+
+  async addCity(technology: string, city: string) {
+    const update = { $push: { cities: { city, count: 0 } } }
+    try {
+      return await this.model.findOneAndUpdate({ technology }, update, { new: true })
+    } catch (error) {
+      if (error instanceof Error) {
+        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
+      }
     }
   }
 
@@ -28,17 +33,24 @@ class TechSearchRepository {
     try {
       return this.model
         .findOne({ technology })
+        .sort({ 'cities.$.count': -1 })
+        .sort({ updatedAt: 1 })
         .populate({ path: 'technology', select: 'name -_id' })
         .populate({ path: 'cities.city', model: 'City', select: 'name uf -_id' })
     } catch (error) {
       if (error instanceof Error) {
         return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
       }
-      return commonReturn(
-        true,
-        '❌ Problem: Database conection failed.',
-        status.internalServerError
-      )
+    }
+  }
+
+  async findCity(technology: string, city: string) {
+    try {
+      return this.model.find({ technology, 'cities.city': city })
+    } catch (error) {
+      if (error instanceof Error) {
+        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
+      }
     }
   }
 
@@ -50,11 +62,6 @@ class TechSearchRepository {
       if (error instanceof Error) {
         return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
       }
-      return commonReturn(
-        true,
-        '❌ Problem: Database conection failed.',
-        status.internalServerError
-      )
     }
   }
 
@@ -66,50 +73,92 @@ class TechSearchRepository {
       if (error instanceof Error) {
         return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
       }
-      return commonReturn(
-        true,
-        '❌ Problem: Database conection failed.',
-        status.internalServerError
-      )
     }
   }
 
   async findById(id: string) {
     try {
-      return this.model.findById(id).populate('technology').populate('cities')
+      return this.model
+        .findById(id)
+        .sort({ 'cities.$.count': -1 })
+        .sort({ updatedAt: 1 })
+        .populate({ path: 'technology', select: 'name -_id' })
+        .populate({ path: 'cities.city', model: 'City', select: 'name uf -_id' })
     } catch (error) {
       if (error instanceof Error) {
         return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
       }
-      return commonReturn(
-        true,
-        '❌ Problem: Database conection failed.',
-        status.internalServerError
-      )
     }
   }
 
-  async findAll() {
+  async findByIdAndAgregate(id: string) {
+    try {
+      return this.model.aggregate([
+        { $match: { _id: new mongoose.Types.ObjectId(id) } },
+        {
+          $lookup: {
+            from: 'technologies',
+            localField: 'technology',
+            foreignField: '_id',
+            as: 'technology'
+          }
+        },
+        {
+          $unwind: '$technology'
+        },
+        { $unwind: '$cities' },
+        { $sort: { 'cities.count': -1 } },
+        { $sort: { 'cities.updatedAt': -1 } },
+        {
+          $lookup: {
+            from: 'cities',
+            localField: 'cities.city',
+            foreignField: '_id',
+            as: 'cities.city'
+          }
+        },
+        { $unwind: '$cities.city' },
+        {
+          $group: {
+            _id: '$_id',
+            technology: { $first: '$technology' },
+            count: { $first: '$count' },
+            cities: { $push: '$cities' },
+            cityData: {
+              $push: {
+                name: '$cities.city.name',
+                uf: '$cities.city.uf',
+                count: '$cities.count'
+              }
+            }
+          }
+        },
+        {
+          $project: {
+            _id: 1,
+            'technology.name': 1,
+            count: 1,
+            cities: '$cityData'
+          }
+        }
+      ])
+    } catch (error) {
+      if (error instanceof Error) {
+        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
+      }
+    }
+  }
+
+  async findFiveTopTrends() {
     try {
       return this.model
         .find()
+        .sort({ count: -1 })
+        .sort({ updatedAt: 1 })
+        .select('_id technology count cities')
+        .limit(5)
         .populate({ path: 'technology', select: 'name -_id' })
-        .populate({ path: 'cities', select: 'name uf -_id' })
-    } catch (error) {
-      if (error instanceof Error) {
-        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
-      }
-      return commonReturn(
-        true,
-        '❌ Problem: Database conection failed.',
-        status.internalServerError
-      )
-    }
-  }
-
-  async count(id: string) {
-    try {
-      return this.model.findByIdAndUpdate(id, { $inc: { count: 1 } })
+        .populate({ path: 'cities.city', model: 'City', select: 'name uf -_id' })
     } catch (error) {
       if (error instanceof Error) {
         return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)

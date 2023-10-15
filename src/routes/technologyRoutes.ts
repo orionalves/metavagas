@@ -8,4 +8,9 @@ const technologyRoutesPost = technologyRoutes.post(
   technologyController.create.bind(technologyController)
 )
 
-export { technologyRoutesPost }
+const technologyRoutesGet = technologyRoutes.get(
+  '/',
+  technologyController.index.bind(technologyController)
+)
+
+export { technologyRoutesPost, technologyRoutesGet }
