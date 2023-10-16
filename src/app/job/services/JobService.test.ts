@@ -12,8 +12,8 @@ import { commonReturn } from '@/utils/commonReturn'
 const repositoryMock = {
   findOne: vi.fn(),
   create: vi.fn(),
-  findById: vi.fn(),
-  search: vi.fn()
+  search: vi.fn(),
+  topFiveCities: vi.fn()
 }
 const technologyRepositoryMock = {
   returnId: vi.fn()
@@ -22,11 +22,9 @@ const cityRepositoryMock = {
   returnId: vi.fn()
 }
 const techSearchRepositoryMock = {
-  returnId: vi.fn(),
+  create: vi.fn(),
   findByTechnology: vi.fn(),
-  incrementsTechnologyCount: vi.fn(),
-  findCity: vi.fn(),
-  incrementsCityCount: vi.fn()
+  incrementsTechnologyCount: vi.fn()
 }
 
 const paramsMock: JobDto = {
@@ -53,7 +51,7 @@ const paramsMockJobSearchWithoutTechs: JobSearch = {
   city: 'Teste'
 }
 
-const paramsMockJobSearchWitTechsWithoutCity: JobSearch = {
+const paramsMockJobSearchWitTechs: JobSearch = {
   position: 'Teste',
   technologies: ['teste1', 'teste2', 'teste3'],
   jobType: 'office',
@@ -61,17 +59,6 @@ const paramsMockJobSearchWitTechsWithoutCity: JobSearch = {
   minSalary: 2000,
   maxSalary: 20000,
   experienceLevel: 'junior'
-}
-
-const paramsMockJobSearchWitTechsAndCity: JobSearch = {
-  position: 'Teste',
-  technologies: ['teste1', 'teste2', 'teste3'],
-  jobType: 'office',
-  workRegime: 'pj',
-  minSalary: 2000,
-  maxSalary: 20000,
-  experienceLevel: 'junior',
-  city: 'Teste'
 }
 
 const sut = new JobService(
@@ -132,35 +119,31 @@ describe('JobService create', () => {
 })
 
 describe('JobService search', () => {
-  it('Should be able to search jobs without any technologies.', async () => {
-    vi.spyOn(repositoryMock, 'search').mockResolvedValue('All jobs without any technologies.')
+  it('Should be able to search jobs without technologies.', async () => {
+    vi.spyOn(repositoryMock, 'search').mockResolvedValue('All jobs without technologies.')
 
     const result = await sut.search(paramsMockJobSearchWithoutTechs)
-    const expected = 'All jobs without any technologies.'
+    const expected = 'All jobs without technologies.'
 
     expect(result).toStrictEqual(expected)
   })
 
-  it('Should be able to search jobs without city.', async () => {
-    vi.spyOn(repositoryMock, 'search').mockResolvedValue(
-      'All jobs with technologies and without city.'
-    )
-    vi.spyOn(techSearchRepositoryMock, 'findByTechnology').mockReturnValue(true)
-    vi.spyOn(techSearchRepositoryMock, 'incrementsTechnologyCount').mockReturnValue(true)
+  it('Should be able to search jobs with technologies.', async () => {
+    vi.spyOn(repositoryMock, 'search').mockResolvedValue('All jobs with technologies.')
 
-    const result = await sut.search(paramsMockJobSearchWitTechsWithoutCity)
-    const expected = 'All jobs with technologies and without city.'
+    const result = await sut.search(paramsMockJobSearchWitTechs)
+    const expected = 'All jobs with technologies.'
 
     expect(result).toStrictEqual(expected)
   })
+})
 
-  it('Should be able to search jobs.', async () => {
-    vi.spyOn(repositoryMock, 'search').mockResolvedValue('All jobs with technologies and city.')
-    vi.spyOn(techSearchRepositoryMock, 'findCity').mockReturnValue(true)
-    vi.spyOn(techSearchRepositoryMock, 'incrementsCityCount').mockReturnValue(true)
+describe('JobService topFiveCities', () => {
+  it('Should be able to show the five cities that most search for the most searched technology.', async () => {
+    vi.spyOn(repositoryMock, 'topFiveCities').mockResolvedValue('Top five cities.')
 
-    const result = await sut.search(paramsMockJobSearchWitTechsAndCity)
-    const expected = 'All jobs with technologies and city.'
+    const result = await sut.topFiveCities('First place technology id.')
+    const expected = 'Top five cities.'
 
     expect(result).toStrictEqual(expected)
   })

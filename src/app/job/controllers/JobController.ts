@@ -30,6 +30,19 @@ class JobController {
     }
     return response.status(status.ok).json(result)
   }
+
+  async topFiveCities(request: Request, response: Response) {
+    const { params } = request
+    const id = params.id
+
+    const result = await this.service.topFiveCities(id)
+
+    if ('error' in result) {
+      return response.status(result.status).json(result)
+    }
+
+    return response.status(status.ok).json(result)
+  }
 }
 
 export { JobController }

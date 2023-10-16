@@ -7,11 +7,6 @@ class TechSearchService {
     const result = await this.repository.findFiveTopTrends()
     return result
   }
-
-  async topCities(data: string) {
-    const result = await this.repository.findByIdAndAgregate(data)
-    return result
-  }
 }
 
 export { TechSearchService }

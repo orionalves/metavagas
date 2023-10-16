@@ -45,7 +45,7 @@ class JobService {
   async search(data: JobSearch) {
     const cityExist = data.city ? await this.cityRepository.returnId(data.city) : null
     const city = typeof cityExist === 'string' ? cityExist : '000000000000000000000000'
-    data.city = city
+    data.city = cityExist ? city : undefined
 
     const queryTechnologies = data.technologies
       ? await Promise.all(
@@ -54,44 +54,27 @@ class JobService {
       : []
     const technologies = queryTechnologies.filter(item => typeof item === 'string') as string[]
 
+    data.technologies = technologies.length === 0 ? undefined : technologies
+
     if (!data.technologies) {
       return await this.repository.search(data)
     }
 
-    if (!data.city || !cityExist) {
-      data.technologies = technologies
-
-      data.technologies.forEach(async technology => {
-        const technologyExists = await this.techSearchRepository.findByTechnology(technology)
-        if (!technologyExists) {
-          const newTechnology = { technology }
-          await this.techSearchRepository.create(newTechnology)
-        }
-        await this.techSearchRepository.incrementsTechnologyCount(technology)
-      })
-
-      return await this.repository.search(data)
-    }
-
-    data.technologies = technologies
-
     data.technologies.forEach(async technology => {
       const technologyExists = await this.techSearchRepository.findByTechnology(technology)
       if (!technologyExists) {
-        const newTechnology = { technology, cities: [{ city: data.city }] }
+        const newTechnology = { technology }
         await this.techSearchRepository.create(newTechnology)
       }
-      const technologyWithCity = { technology, 'cities.city': data.city }
       await this.techSearchRepository.incrementsTechnologyCount(technology)
-      const cityInTechnology = await this.techSearchRepository.findCity(technology, city)
-      if (Array.isArray(cityInTechnology) && !cityInTechnology.length) {
-        await this.techSearchRepository.addCity(technology, city)
-      }
-      await this.techSearchRepository.incrementsCityCount(technologyWithCity)
     })
 
     const result = await this.repository.search(data)
     return result
+  }
+
+  async topFiveCities(technology: string) {
+    return this.repository.topFiveCities(technology)
   }
 }
 

@@ -5,5 +5,9 @@ const jobRoutes = Router()
 
 const jobRoutesPost = jobRoutes.post('/', jobController.create.bind(jobController))
 const jobRoutesGet = jobRoutes.get('/', jobController.search.bind(jobController))
+const jobRoutesGetCities = jobRoutes.get(
+  '/trends/:id/cities',
+  jobController.topFiveCities.bind(jobController)
+)
 
-export { jobRoutesPost, jobRoutesGet }
+export { jobRoutesPost, jobRoutesGet, jobRoutesGetCities }
