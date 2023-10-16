@@ -3,14 +3,13 @@ import { techSearchController } from '@/techSearch/TechSearchModule'
 
 const techSearchRoutes = Router()
 
-// const techSearchRoutesGet = techSearchRoutes.get(
-//   '/',
-//   techSearchController.topTrends.bind(techSearchController)
-// )
 const techSearchRoutesGetCities = techSearchRoutes.get(
-  '/',
+  '/trends/:id/cities',
   techSearchController.topCities.bind(techSearchController)
 )
+const techSearchRoutesGet = techSearchRoutes.get(
+  '/trends/techs',
+  techSearchController.topTrends.bind(techSearchController)
+)
 
-// export { techSearchRoutesGet, techSearchRoutesGetCities }
-export { techSearchRoutesGetCities }
+export { techSearchRoutesGet, techSearchRoutesGetCities }

@@ -1,4 +1,3 @@
-/* eslint-disable max-lines */
 import { Model } from 'mongoose'
 import { TypeJob } from '@/job/entities/Job'
 import { JobDto, JobSearch } from '@/job/dtos/JobDto'
@@ -30,42 +29,6 @@ class JobRepository {
     try {
       this.model.create(data)
       return commonReturn(false, '✔️ Ok: Job created!', status.created)
-    } catch (error) {
-      if (error instanceof Error) {
-        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
-      }
-      return commonReturn(
-        true,
-        '❌ Problem: Database conection failed.',
-        status.internalServerError
-      )
-    }
-  }
-
-  async findById(id: string) {
-    try {
-      return this.model
-        .findById(id)
-        .populate({ path: 'technologies', select: 'name -_id' })
-        .populate({ path: 'city', select: 'name uf -_id' })
-    } catch (error) {
-      if (error instanceof Error) {
-        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
-      }
-      return commonReturn(
-        true,
-        '❌ Problem: Database conection failed.',
-        status.internalServerError
-      )
-    }
-  }
-
-  async findAll() {
-    try {
-      return this.model
-        .find()
-        .populate({ path: 'technologies', select: 'name -_id' })
-        .populate({ path: 'city', select: 'name uf -_id' })
     } catch (error) {
       if (error instanceof Error) {
         return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)

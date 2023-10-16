@@ -7,7 +7,7 @@ import { commonReturn } from '@/utils/commonReturn'
 class TechnologyRepository {
   constructor(private model: Model<TypeTechnology>) {}
 
-  async create(data: TypeTechnology) {
+  async create(data: TechnologyDto) {
     try {
       this.model.create(data)
       return commonReturn(false, '✔️ Ok: Technology created!', status.created)
@@ -46,21 +46,6 @@ class TechnologyRepository {
       } else {
         return null
       }
-    } catch (error) {
-      if (error instanceof Error) {
-        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
-      }
-      return commonReturn(
-        true,
-        '❌ Problem: Database conection failed.',
-        status.internalServerError
-      )
-    }
-  }
-
-  async findById(id: string) {
-    try {
-      return this.model.findById(id).select('name')
     } catch (error) {
       if (error instanceof Error) {
         return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)

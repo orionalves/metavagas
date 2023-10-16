@@ -35,12 +35,12 @@
    - **Ator**: Cliente da API.
    - **Descrição**: Cliente da API solicita uma lista das 5 tecnologias mais buscadas.
    - **Fluxo Principal**:
-     1. Cliente da API envia uma requisição GET para o endpoint `/trends/technologies`.
+     1. Cliente da API envia uma requisição GET para o endpoint `/trends/tech`.
      2. API retorna uma lista com as 5 tecnologias mais procuradas.
 
 6. **Caso de Uso 6**: **Busca pelas 5 Cidades para uma Tecnologia Específica**
    - **Ator**: Cliente da API.
    - **Descrição**: Cliente da API solicita uma lista das 5 cidades que mais buscam por uma tecnologia específica.
    - **Fluxo Principal**:
-     1. Cliente da API envia uma requisição GET para o endpoint `/trends/cities` com o parâmetro da tecnologia desejada.
+     1. Cliente da API envia uma requisição GET para o endpoint `/trends/:id/cities` com o parâmetro do id da tecnologia desejada.
      2. API retorna uma lista com as 5 cidades que mais procuraram pela tecnologia especificada.

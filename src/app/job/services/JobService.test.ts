@@ -1,23 +1,32 @@
+/* eslint-disable max-lines */
 import { describe, it, vi, expect } from 'vitest'
 import { JobService } from './JobService'
 import { JobRepository } from '@/job/repositories/JobRepository'
-import { JobDto } from '@/job/dtos/JobDto'
+import { JobDto, JobSearch } from '@/job/dtos/JobDto'
 import { status } from '@/utils/status'
 import { TechnologyRepository } from '@/app/technology/repositories/TechnologyRepository'
 import { CityRepository } from '@/app/city/repositories/CityRepository'
+import { TechSearchRepository } from '@/techSearch/repositories/TechSearchRepository'
 import { commonReturn } from '@/utils/commonReturn'
 
 const repositoryMock = {
   findOne: vi.fn(),
   create: vi.fn(),
   findById: vi.fn(),
-  findAll: vi.fn()
+  search: vi.fn()
 }
 const technologyRepositoryMock = {
   returnId: vi.fn()
 }
 const cityRepositoryMock = {
   returnId: vi.fn()
+}
+const techSearchRepositoryMock = {
+  returnId: vi.fn(),
+  findByTechnology: vi.fn(),
+  incrementsTechnologyCount: vi.fn(),
+  findCity: vi.fn(),
+  incrementsCityCount: vi.fn()
 }
 
 const paramsMock: JobDto = {
@@ -34,10 +43,42 @@ const paramsMock: JobDto = {
   city: 'Teste'
 }
 
+const paramsMockJobSearchWithoutTechs: JobSearch = {
+  position: 'Teste',
+  jobType: 'office',
+  workRegime: 'pj',
+  minSalary: 2000,
+  maxSalary: 20000,
+  experienceLevel: 'junior',
+  city: 'Teste'
+}
+
+const paramsMockJobSearchWitTechsWithoutCity: JobSearch = {
+  position: 'Teste',
+  technologies: ['teste1', 'teste2', 'teste3'],
+  jobType: 'office',
+  workRegime: 'pj',
+  minSalary: 2000,
+  maxSalary: 20000,
+  experienceLevel: 'junior'
+}
+
+const paramsMockJobSearchWitTechsAndCity: JobSearch = {
+  position: 'Teste',
+  technologies: ['teste1', 'teste2', 'teste3'],
+  jobType: 'office',
+  workRegime: 'pj',
+  minSalary: 2000,
+  maxSalary: 20000,
+  experienceLevel: 'junior',
+  city: 'Teste'
+}
+
 const sut = new JobService(
   repositoryMock as unknown as JobRepository,
   technologyRepositoryMock as unknown as TechnologyRepository,
-  cityRepositoryMock as unknown as CityRepository
+  cityRepositoryMock as unknown as CityRepository,
+  techSearchRepositoryMock as unknown as TechSearchRepository
 )
 
 describe('JobService create', () => {
@@ -90,12 +131,36 @@ describe('JobService create', () => {
   })
 })
 
-describe('JobService index', () => {
-  it('Should be able to search all jobs.', async () => {
-    vi.spyOn(repositoryMock, 'findAll').mockResolvedValue('All jobs')
+describe('JobService search', () => {
+  it('Should be able to search jobs without any technologies.', async () => {
+    vi.spyOn(repositoryMock, 'search').mockResolvedValue('All jobs without any technologies.')
 
-    const result = await sut.index()
-    const expected = 'All jobs'
+    const result = await sut.search(paramsMockJobSearchWithoutTechs)
+    const expected = 'All jobs without any technologies.'
+
+    expect(result).toStrictEqual(expected)
+  })
+
+  it('Should be able to search jobs without city.', async () => {
+    vi.spyOn(repositoryMock, 'search').mockResolvedValue(
+      'All jobs with technologies and without city.'
+    )
+    vi.spyOn(techSearchRepositoryMock, 'findByTechnology').mockReturnValue(true)
+    vi.spyOn(techSearchRepositoryMock, 'incrementsTechnologyCount').mockReturnValue(true)
+
+    const result = await sut.search(paramsMockJobSearchWitTechsWithoutCity)
+    const expected = 'All jobs with technologies and without city.'
+
+    expect(result).toStrictEqual(expected)
+  })
+
+  it('Should be able to search jobs.', async () => {
+    vi.spyOn(repositoryMock, 'search').mockResolvedValue('All jobs with technologies and city.')
+    vi.spyOn(techSearchRepositoryMock, 'findCity').mockReturnValue(true)
+    vi.spyOn(techSearchRepositoryMock, 'incrementsCityCount').mockReturnValue(true)
+
+    const result = await sut.search(paramsMockJobSearchWitTechsAndCity)
+    const expected = 'All jobs with technologies and city.'
 
     expect(result).toStrictEqual(expected)
   })

@@ -7,7 +7,7 @@ import { commonReturn } from '@/utils/commonReturn'
 class CityRepository {
   constructor(private model: Model<TypeCity>) {}
 
-  async create(data: TypeCity) {
+  async create(data: CityDto) {
     try {
       await this.model.create(data)
       return commonReturn(false, '✔️ Ok: City created!', status.created)
@@ -26,21 +26,6 @@ class CityRepository {
   async findOne(data: CityDto) {
     try {
       return this.model.findOne(data).select('name uf _id')
-    } catch (error) {
-      if (error instanceof Error) {
-        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
-      }
-      return commonReturn(
-        true,
-        '❌ Problem: Database conection failed.',
-        status.internalServerError
-      )
-    }
-  }
-
-  async findById(id: string) {
-    try {
-      return this.model.findById(id).select('name uf')
     } catch (error) {
       if (error instanceof Error) {
         return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)

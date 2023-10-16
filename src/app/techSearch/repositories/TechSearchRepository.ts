@@ -31,12 +31,7 @@ class TechSearchRepository {
 
   async findByTechnology(technology: string) {
     try {
-      return this.model
-        .findOne({ technology })
-        .sort({ 'cities.$.count': -1 })
-        .sort({ updatedAt: 1 })
-        .populate({ path: 'technology', select: 'name -_id' })
-        .populate({ path: 'cities.city', model: 'City', select: 'name uf -_id' })
+      return this.model.findOne({ technology })
     } catch (error) {
       if (error instanceof Error) {
         return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
@@ -76,18 +71,24 @@ class TechSearchRepository {
     }
   }
 
-  async findById(id: string) {
+  async findFiveTopTrends() {
     try {
       return this.model
-        .findById(id)
-        .sort({ 'cities.$.count': -1 })
+        .find()
+        .sort({ count: -1 })
         .sort({ updatedAt: 1 })
+        .select('_id technology count')
+        .limit(5)
         .populate({ path: 'technology', select: 'name -_id' })
-        .populate({ path: 'cities.city', model: 'City', select: 'name uf -_id' })
     } catch (error) {
       if (error instanceof Error) {
         return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
       }
+      return commonReturn(
+        true,
+        '❌ Problem: Database conection failed.',
+        status.internalServerError
+      )
     }
   }
 
@@ -142,23 +143,6 @@ class TechSearchRepository {
           }
         }
       ])
-    } catch (error) {
-      if (error instanceof Error) {
-        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
-      }
-    }
-  }
-
-  async findFiveTopTrends() {
-    try {
-      return this.model
-        .find()
-        .sort({ count: -1 })
-        .sort({ updatedAt: 1 })
-        .select('_id technology count cities')
-        .limit(5)
-        .populate({ path: 'technology', select: 'name -_id' })
-        .populate({ path: 'cities.city', model: 'City', select: 'name uf -_id' })
     } catch (error) {
       if (error instanceof Error) {
         return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)

@@ -45,6 +45,7 @@ class JobService {
   async search(data: JobSearch) {
     const cityExist = data.city ? await this.cityRepository.returnId(data.city) : null
     const city = typeof cityExist === 'string' ? cityExist : '000000000000000000000000'
+    data.city = city
 
     const queryTechnologies = data.technologies
       ? await Promise.all(
@@ -53,13 +54,11 @@ class JobService {
       : []
     const technologies = queryTechnologies.filter(item => typeof item === 'string') as string[]
 
-    if (data.city && !data.technologies) {
-      data.city = city
-
+    if (!data.technologies) {
       return await this.repository.search(data)
     }
 
-    if (!data.city && data.technologies) {
+    if (!data.city || !cityExist) {
       data.technologies = technologies
 
       data.technologies.forEach(async technology => {
@@ -74,34 +73,24 @@ class JobService {
       return await this.repository.search(data)
     }
 
-    if (cityExist && data.technologies) {
-      data.city = city
-      data.technologies = technologies
+    data.technologies = technologies
 
-      data.technologies.forEach(async technology => {
-        const technologyExists = await this.techSearchRepository.findByTechnology(technology)
-        if (!technologyExists) {
-          const newTechnology = { technology, cities: [{ city: data.city }] }
-          await this.techSearchRepository.create(newTechnology)
-        }
-        const technologyWithCity = { technology, 'cities.city': data.city }
-        await this.techSearchRepository.incrementsTechnologyCount(technology)
-        const cityInTechnology = await this.techSearchRepository.findCity(technology, city)
-        if (Array.isArray(cityInTechnology) && !cityInTechnology.length) {
-          await this.techSearchRepository.addCity(technology, city)
-        }
-        await this.techSearchRepository.incrementsCityCount(technologyWithCity)
-      })
-
-      return await this.repository.search(data)
-    }
+    data.technologies.forEach(async technology => {
+      const technologyExists = await this.techSearchRepository.findByTechnology(technology)
+      if (!technologyExists) {
+        const newTechnology = { technology, cities: [{ city: data.city }] }
+        await this.techSearchRepository.create(newTechnology)
+      }
+      const technologyWithCity = { technology, 'cities.city': data.city }
+      await this.techSearchRepository.incrementsTechnologyCount(technology)
+      const cityInTechnology = await this.techSearchRepository.findCity(technology, city)
+      if (Array.isArray(cityInTechnology) && !cityInTechnology.length) {
+        await this.techSearchRepository.addCity(technology, city)
+      }
+      await this.techSearchRepository.incrementsCityCount(technologyWithCity)
+    })
 
     const result = await this.repository.search(data)
-    return result
-  }
-
-  async index() {
-    const result = await this.repository.findAll()
     return result
   }
 }

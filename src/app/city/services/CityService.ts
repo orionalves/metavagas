@@ -1,7 +1,6 @@
 import { CityRepository } from '@/city/repositories/CityRepository'
 import { status } from '@/utils/status'
 import { CityDto } from '@/city/dtos/CityDto'
-import { TypeCity } from '@/city/entities/City'
 import { commonReturn } from '@/utils/commonReturn'
 
 class CityService {
@@ -13,7 +12,7 @@ class CityService {
       return commonReturn(true, '❌ Problem: This city already exist.', status.badRequest)
     }
 
-    const result = await this.repository.create(data as TypeCity)
+    const result = await this.repository.create(data)
     return result
   }
 
