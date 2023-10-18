@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { jobSchemaValidation } from '@/utils/validations/jobSchemaValidation'
 import { JobService } from '@/job/services/JobService'
 import { status } from '@/utils/status'
+import { jobSearchValidation } from '@/utils/validations/jobSearchValidation'
 
 class JobController {
   constructor(private service: JobService) {}
@@ -23,6 +24,11 @@ class JobController {
 
   async search(request: Request, response: Response) {
     const { query } = request
+
+    const queryIsValid = await jobSearchValidation(query)
+    if (queryIsValid.error) {
+      return response.status(queryIsValid.status).json(queryIsValid)
+    }
 
     const result = await this.service.search(query)
     if ('error' in result) {

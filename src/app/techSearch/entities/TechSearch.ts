@@ -10,16 +10,7 @@ const TechSearchSchema = new Schema(
     count: {
       type: Number,
       default: 0
-    },
-    cities: [
-      {
-        city: { type: Schema.Types.ObjectId, ref: 'City' },
-        count: {
-          type: Number,
-          default: 0
-        }
-      }
-    ]
+    }
   },
   { timestamps: true }
 )

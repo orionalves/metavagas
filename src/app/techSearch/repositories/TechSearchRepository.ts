@@ -17,30 +17,9 @@ class TechSearchRepository {
     }
   }
 
-  async addCity(technology: string, city: string) {
-    const update = { $push: { cities: { city, count: 0 } } }
-    try {
-      return await this.model.findOneAndUpdate({ technology }, update, { new: true })
-    } catch (error) {
-      if (error instanceof Error) {
-        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
-      }
-    }
-  }
-
   async findByTechnology(technology: string) {
     try {
       return this.model.findOne({ technology })
-    } catch (error) {
-      if (error instanceof Error) {
-        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
-      }
-    }
-  }
-
-  async findCity(technology: string, city: string) {
-    try {
-      return this.model.find({ technology, 'cities.city': city })
     } catch (error) {
       if (error instanceof Error) {
         return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)

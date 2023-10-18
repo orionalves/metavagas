@@ -22,6 +22,8 @@ interface JobSearch {
   experienceLevel?: 'junior' | 'mid-level' | 'senior'
   minSalary?: number
   maxSalary?: number
+  page?: number
+  perPage?: number
 }
 
 export { JobDto, JobSearch }

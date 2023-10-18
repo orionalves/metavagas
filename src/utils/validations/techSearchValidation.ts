@@ -17,8 +17,7 @@ const techSearchValidation = async (
     }
 > => {
   const TechSearchSchema = yup.object().shape({
-    technology: yup.string().min(2).required(),
-    cities: yup.array().of(yup.string()).min(2)
+    technology: yup.string().min(2).required()
   })
 
   try {
