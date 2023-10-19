@@ -50,7 +50,7 @@ class UserController {
       name: result?.name,
       email: result?.email
     }
-    return response.status(status.created).json(payload)
+    return response.status(status.ok).json(payload)
   }
 }
 

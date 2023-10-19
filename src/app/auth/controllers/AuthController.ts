@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { loginSchemaValidation } from '@/utils/validations/loginSchemaValidation'
 import { AuthService } from '@/auth/services/AuthService'
+import { status } from '@/utils/status'
 
 class AuthController {
   constructor(private service: AuthService) {}
@@ -19,7 +20,7 @@ class AuthController {
       return response.status(result.status).json(result)
     }
 
-    return response.status(200).json(result)
+    return response.status(status.ok).json(result)
   }
 }
 

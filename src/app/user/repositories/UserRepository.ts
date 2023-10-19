@@ -9,8 +9,8 @@ class UserRepository {
 
   async create(data: TypeUser) {
     try {
-      // Retorno do que aparece no json
-      return this.model.create(data)
+      await this.model.create(data)
+      return commonReturn(false, '✔️ Ok: User created!', status.created)
     } catch (error) {
       if (error instanceof Error) {
         return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)

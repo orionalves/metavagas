@@ -22,7 +22,7 @@ class AuthService {
       return commonReturn(true, '❌ Problem: E-mail or password is invalid', status.notFound)
     }
     if ('error' in user) {
-      return commonReturn(true, `❌ Problem: ${user.message}`, user.status)
+      return commonReturn(true, user.message, user.status)
     }
 
     const passwordIsValid = comparePassword(data.password, user.password)

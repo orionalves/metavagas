@@ -1,8 +1,8 @@
 import { describe, it, vi, expect } from 'vitest'
 import { UserRepository } from '@/user/repositories/UserRepository'
 import { AuthService } from './AuthService'
-import { commonError } from '@/utils/commonError'
 import { status } from '@/utils/status'
+import { commonReturn } from '@/utils/commonReturn'
 
 const repositoryMock = {
   create: vi.fn(),
@@ -23,8 +23,9 @@ describe('AuthService', () => {
     vi.stubEnv('JWT_SECRET_KEY', '')
 
     const result = await sut.login(paramsMock)
-    const expected = commonError(
-      'Environment configuration failed: secretKey not found.',
+    const expected = commonReturn(
+      true,
+      '❌ Problem: Environment configuration failed: secretKey not found.',
       status.internalServerError
     )
 
@@ -36,7 +37,11 @@ describe('AuthService', () => {
     vi.spyOn(repositoryMock, 'findByEmail').mockResolvedValue(false)
 
     const result = await sut.login(paramsMock)
-    const expected = commonError('E-mail or password is invalid', status.notFound)
+    const expected = commonReturn(
+      true,
+      '❌ Problem: E-mail or password is invalid',
+      status.notFound
+    )
 
     expect(result).toStrictEqual(expected)
   })
@@ -44,14 +49,18 @@ describe('AuthService', () => {
   it('should be able to return an error if database connection failed', async () => {
     const userErrorMock = {
       error: true,
-      message: 'Database connection failed',
+      message: '❌ Problem: Database connection failed',
       status: status.internalServerError
     }
     vi.stubEnv('JWT_SECRET_KEY', 'Validate!')
     vi.spyOn(repositoryMock, 'findByEmail').mockResolvedValue(userErrorMock)
 
     const result = await sut.login(paramsMock)
-    const expected = commonError('Database connection failed', status.internalServerError)
+    const expected = commonReturn(
+      true,
+      '❌ Problem: Database connection failed',
+      status.internalServerError
+    )
 
     expect(result).toStrictEqual(expected)
   })
@@ -62,7 +71,11 @@ describe('AuthService', () => {
     vi.spyOn(comparePassword, 'comparePassword').mockReturnValue(false)
 
     const result = await sut.login(paramsMock)
-    const expected = commonError('E-mail or password is invalid', status.notFound)
+    const expected = commonReturn(
+      true,
+      '❌ Problem: E-mail or password is invalid',
+      status.notFound
+    )
 
     expect(result).toStrictEqual(expected)
   })

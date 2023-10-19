@@ -11,10 +11,11 @@ const routes = Router()
 
 routes.use(userSignup)
 routes.use(authRoutes)
+routes.use(cityRoutesGet)
 routes.use(technologyRoutesGet)
 routes.use(getTrendsCities)
-routes.use(cityRoutesGet)
 
+// Não está autenticando algumas rotas.
 routes.use(AuthMiddleware.handler)
 routes.use(searchJobs)
 routes.use(userUpdate)

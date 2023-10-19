@@ -1,4 +1,4 @@
-import { commonError } from '@/utils/commonError.js'
+import { commonReturn } from '@/utils/commonReturn'
 import { status } from '@/utils/status.js'
 import { jwtVerify } from '@/utils/jwtVerify'
 import { Request, Response, NextFunction } from 'express'
@@ -6,8 +6,9 @@ import { Request, Response, NextFunction } from 'express'
 class AuthMiddleware {
   static async handler(request: Request, response: Response, next: NextFunction) {
     if (!process.env.JWT_SECRET_KEY) {
-      return commonError(
-        'Environment configuration failed: secretKey not found.',
+      return commonReturn(
+        true,
+        '❌ Problem: Environment configuration failed: secretKey not found.',
         status.internalServerError
       )
     }
@@ -16,18 +17,17 @@ class AuthMiddleware {
     if (!headers.authorization) {
       return response
         .status(status.unauthorized)
-        .json(commonError('Unauthorized!', status.unauthorized))
+        .json(commonReturn(true, '❌ Problem: Unauthorized!', status.unauthorized))
     }
 
     const [, token] = headers.authorization.split(' ')
 
     try {
-      // JWT.verify(token, process.env.JWT_SECRET_KEY)
       jwtVerify(token, process.env.JWT_SECRET_KEY)
     } catch {
       return response
         .status(status.unauthorized)
-        .json(commonError('Unauthorized!', status.unauthorized))
+        .json(commonReturn(true, '❌ Problem: Unauthorized!', status.unauthorized))
     }
 
     next()
