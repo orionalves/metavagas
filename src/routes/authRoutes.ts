@@ -3,6 +3,6 @@ import { Router } from 'express'
 
 const authRoutes = Router()
 
-authRoutes.post('/', authController.login.bind(authController))
+authRoutes.post('/login', authController.login.bind(authController))
 
 export { authRoutes }

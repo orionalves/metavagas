@@ -1,27 +1,28 @@
 import { Router } from 'express'
-import { userRoutes } from '@/routes/userRoutes'
+import { userSignup, userUpdate } from '@/routes/userRoutes'
 import { authRoutes } from '@/routes/authRoutes'
 import { AuthMiddleware } from '@/middlewares/AuthMiddleware'
-import { jobRoutesGet, jobRoutesPost, jobRoutesGetCities } from '@/routes/jobRoutes'
+import { createJobs, searchJobs, getTrendsCities } from '@/routes/jobRoutes'
 import { cityRoutesPost, cityRoutesGet } from '@/routes/cityRoutes'
 import { technologyRoutesGet, technologyRoutesPost } from '@/routes/technologyRoutes'
 import { techSearchRoutesGet } from '@/routes/techSearchRoutes'
 
 const routes = Router()
 
-routes.use('/signup', userRoutes)
-routes.use('/login', authRoutes)
-routes.use('/tech', technologyRoutesGet)
-routes.use('/jobs', jobRoutesGet)
-routes.use(jobRoutesGetCities)
-routes.use('/city', cityRoutesGet)
+routes.use(userSignup)
+routes.use(authRoutes)
+routes.use(technologyRoutesGet)
+routes.use(getTrendsCities)
+routes.use(cityRoutesGet)
 
 routes.use(AuthMiddleware.handler)
+routes.use(searchJobs)
+routes.use(userUpdate)
 routes.use(techSearchRoutesGet)
-routes.use('/jobs', jobRoutesPost)
+routes.use(createJobs)
 
 // Não queria permitir criar cidades ou tecnologias, elas já deveriam estar implementadas no banco de dados.
-routes.use('/city', cityRoutesPost)
-routes.use('/tech', technologyRoutesPost)
+routes.use(cityRoutesPost)
+routes.use(technologyRoutesPost)
 
 export { routes }

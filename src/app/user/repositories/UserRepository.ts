@@ -1,7 +1,8 @@
 import { TypeUser } from '@/user/entities/User'
-import { commonError } from '@/utils/commonError'
+import { commonReturn } from '@/utils/commonReturn'
 import { status } from '@/utils/status'
 import { Model } from 'mongoose'
+import { UserUpdate } from '@/user/dtos/UserDto'
 
 class UserRepository {
   constructor(private model: Model<TypeUser>) {}
@@ -12,9 +13,9 @@ class UserRepository {
       return this.model.create(data)
     } catch (error) {
       if (error instanceof Error) {
-        return commonError(`❌ Problem: ${error.message}`, status.internalServerError)
+        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
       }
-      return commonError('Database conection failed.', status.internalServerError)
+      return commonReturn(true, 'Database conection failed.', status.internalServerError)
     }
   }
 
@@ -23,9 +24,9 @@ class UserRepository {
       return this.model.findById(id)
     } catch (error) {
       if (error instanceof Error) {
-        return commonError(`❌ Problem: ${error.message}`, status.internalServerError)
+        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
       }
-      return commonError('Database conection failed.', status.internalServerError)
+      return commonReturn(true, 'Database conection failed.', status.internalServerError)
     }
   }
 
@@ -34,22 +35,34 @@ class UserRepository {
       return this.model.findOne({ email })
     } catch (error) {
       if (error instanceof Error) {
-        return commonError(`❌ Problem: ${error.message}`, status.internalServerError)
+        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
       }
-      return commonError('Database conection failed.', status.internalServerError)
+      return commonReturn(true, 'Database conection failed.', status.internalServerError)
     }
   }
 
-  async findAll() {
+  async update(data: UserUpdate) {
+    const update = { name: data.name, password: data.password }
     try {
-      return this.model.find().populate('')
+      return this.model.findByIdAndUpdate(data.id, update, { new: true })
     } catch (error) {
       if (error instanceof Error) {
-        return commonError(`❌ Problem: ${error.message}`, status.internalServerError)
+        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
       }
-      return commonError('Database conection failed.', status.internalServerError)
+      return commonReturn(true, 'Database conection failed.', status.internalServerError)
     }
   }
+
+  // async findAll() {
+  //   try {
+  //     return this.model.find().populate('')
+  //   } catch (error) {
+  //     if (error instanceof Error) {
+  //       return commonReturn(true,`❌ Problem: ${error.message}`, status.internalServerError)
+  //     }
+  //     return commonReturn(true,'Database conection failed.', status.internalServerError)
+  //   }
+  // }
 }
 
 export { UserRepository }

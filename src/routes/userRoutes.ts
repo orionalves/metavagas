@@ -3,6 +3,7 @@ import { userController } from '@/user/UserModule'
 
 const userRoutes = Router()
 
-userRoutes.post('/', userController.create.bind(userController))
+const userSignup = userRoutes.post('/signup', userController.create.bind(userController))
+const userUpdate = userRoutes.post('/:id/update', userController.update.bind(userController))
 
-export { userRoutes }
+export { userSignup, userUpdate }

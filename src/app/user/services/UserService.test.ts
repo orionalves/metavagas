@@ -2,7 +2,7 @@ import { describe, it, vi, expect } from 'vitest'
 import { TypeUser } from '@/user/entities/User'
 import { UserRepository } from '@/user/repositories/UserRepository'
 import { UserService } from './UserService'
-import { commonError } from '@/utils/commonError'
+import { commonReturn } from '@/utils/commonReturn'
 import { status } from '@/utils/status'
 
 const repositoryMock = {
@@ -25,7 +25,7 @@ describe('UserService', () => {
     vi.spyOn(repositoryMock, 'findByEmail').mockResolvedValue(paramsMock)
 
     const result = await sut.create(paramsMock as TypeUser)
-    const expected = commonError('This email already exist.', status.badRequest)
+    const expected = commonReturn(true, '❌ Problem: This email already exist.', status.badRequest)
 
     expect(result).toStrictEqual(expected)
   })
