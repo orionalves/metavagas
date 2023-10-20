@@ -11,4 +11,10 @@ interface UserUpdate {
   oldPassword: string
 }
 
-export { UserDto, UserUpdate }
+interface UserFavorite {
+  id: string
+  remove?: boolean
+  favorite: string
+}
+
+export { UserDto, UserUpdate, UserFavorite }

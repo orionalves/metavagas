@@ -17,7 +17,21 @@ const UserSchema = new Schema(
       type: String,
       required: true,
       minLength: 8
-    }
+    },
+    favorites: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Job',
+        required: true
+      }
+    ],
+    history: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Job',
+        required: true
+      }
+    ]
   },
   { timestamps: true }
 )

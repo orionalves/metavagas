@@ -52,6 +52,35 @@ class UserController {
     }
     return response.status(status.ok).json(payload)
   }
+
+  async showFavorites(request: Request, response: Response) {
+    const id = request.params.id
+    const result = await this.service.showFavority(id)
+
+    if (result !== null && 'error' in result) {
+      return response.status(result.status).json(result)
+    }
+    return response.status(status.ok).json(result)
+  }
+
+  async toggleFavorite(request: Request, response: Response) {
+    const id = request.params.id
+    const { query } = request
+
+    const data = {
+      id,
+      remove: query.remove ? true : undefined,
+      favorite: query.favorite as string
+    }
+
+    const result = await this.service.toggleFavorite(data)
+
+    if (result !== null && 'error' in result) {
+      return response.status(result.status).json(result)
+    }
+
+    return response.status(status.ok).json(result)
+  }
 }
 
 export { UserController }

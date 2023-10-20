@@ -3,7 +3,7 @@ import { commonReturn } from '@/utils/commonReturn'
 import { UserRepository } from '@/user/repositories/UserRepository'
 import { TypeUser } from '@/user/entities/User'
 import { status } from '@/utils/status'
-import { UserUpdate } from '@/user/dtos/UserDto'
+import { UserFavorite, UserUpdate } from '@/user/dtos/UserDto'
 import { comparePassword } from '@/utils/comparePassword'
 
 class UserService {
@@ -53,6 +53,20 @@ class UserService {
 
     const result = await this.repository.update(userUpdate)
     return result
+  }
+
+  async showFavority(id: string) {
+    return await this.repository.showFavorite(id)
+  }
+
+  async toggleFavorite(data: UserFavorite) {
+    if (!data.remove) {
+      const favoriteExiste = await this.repository.findFavorite(data.favorite)
+      if (favoriteExiste) {
+        return commonReturn(true, '❌ Problem: Already favorited.', status.badRequest)
+      }
+    }
+    return await this.repository.toggleFavorite(data)
   }
 }
 
