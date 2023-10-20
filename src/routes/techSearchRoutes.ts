@@ -3,9 +3,9 @@ import { techSearchController } from '@/techSearch/TechSearchModule'
 
 const techSearchRoutes = Router()
 
-const techSearchRoutesGet = techSearchRoutes.get(
+const getTrendTech = techSearchRoutes.get(
   '/trends/techs',
   techSearchController.topTrends.bind(techSearchController)
 )
 
-export { techSearchRoutesGet }
+export { getTrendTech }

@@ -1,16 +1,18 @@
 import { Router } from 'express'
 import { technologyController } from '@/app/technology/TechnologyModule'
+import { AuthMiddleware } from '@/middlewares/AuthMiddleware'
 
 const technologyRoutes = Router()
 
-const technologyRoutesPost = technologyRoutes.post(
+const postTechnology = technologyRoutes.post(
   '/tech',
+  AuthMiddleware.handler,
   technologyController.create.bind(technologyController)
 )
 
-const technologyRoutesGet = technologyRoutes.get(
+const getTechnology = technologyRoutes.get(
   '/tech',
   technologyController.index.bind(technologyController)
 )
 
-export { technologyRoutesPost, technologyRoutesGet }
+export { postTechnology, getTechnology }

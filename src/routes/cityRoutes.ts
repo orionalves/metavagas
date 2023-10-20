@@ -1,9 +1,18 @@
 import { Router } from 'express'
 import { cityController } from '@/city/CityModule'
+import { AuthMiddleware } from '@/middlewares/AuthMiddleware'
 
 const cityRoutes = Router()
 
-const cityRoutesGet = cityRoutes.get('/city', cityController.index.bind(cityController))
-const cityRoutesPost = cityRoutes.post('/city', cityController.create.bind(cityController))
+// Get city
+const getCity = cityRoutes.get('/city', cityController.index.bind(cityController))
 
-export { cityRoutesPost, cityRoutesGet }
+// Create city
+
+const postCity = cityRoutes.post(
+  '/city',
+  AuthMiddleware.handler,
+  cityController.create.bind(cityController)
+)
+
+export { postCity, getCity }
