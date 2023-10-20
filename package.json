@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "start": "tsx src/index.ts",
+    "start": "node dist/index.ts",
     "dev": "tsx watch src/index.ts",
     "build": "tsup src",
     "test": "vitest"
@@ -33,5 +33,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.5.1",
     "yup": "^1.2.0"
+  }, "engines": {
+    "node": ">=18.14.2"
   }
 }
