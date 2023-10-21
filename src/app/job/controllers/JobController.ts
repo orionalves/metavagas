@@ -23,14 +23,15 @@ class JobController {
   }
 
   async search(request: Request, response: Response) {
-    const { query } = request
+    const { query, params } = request
+    const id = params.id
 
     const queryIsValid = await jobSearchValidation(query)
     if (queryIsValid.error) {
       return response.status(queryIsValid.status).json(queryIsValid)
     }
 
-    const result = await this.service.search(query)
+    const result = await this.service.search(id, query)
     if ('error' in result) {
       return response.status(result.status).json(result)
     }

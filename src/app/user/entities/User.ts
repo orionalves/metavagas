@@ -26,11 +26,13 @@ const UserSchema = new Schema(
       }
     ],
     history: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Job',
-        required: true
-      }
+      [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'Job',
+          required: true
+        }
+      ]
     ]
   },
   { timestamps: true }

@@ -49,7 +49,7 @@ class JobRepository {
     const page = data.page || 1
     const perPage = data.perPage || 10
     try {
-      return await this.model.aggregate([
+      const result = await this.model.aggregate([
         {
           $match: {
             $and: [
@@ -115,12 +115,11 @@ class JobRepository {
         {
           $facet: {
             metadata: [
-              { $count: 'total' },
+              { $count: 'totalDocuments' },
               {
                 $addFields: {
-                  totalPages: { $ceil: { $divide: ['$total', Number(perPage)] } },
-                  page: Number(page),
-                  perPage: Number(perPage)
+                  totalPages: { $ceil: { $divide: ['$totalDocuments', Number(perPage)] } },
+                  page: Number(page)
                 }
               }
             ],
@@ -128,6 +127,8 @@ class JobRepository {
           }
         }
       ])
+      result[0].metadata = { ...result[0].metadata[0], count: result[0].data.length }
+      return result
     } catch (error) {
       if (error instanceof Error) {
         return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)

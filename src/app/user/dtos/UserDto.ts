@@ -17,4 +17,9 @@ interface UserFavorite {
   favorite: string
 }
 
-export { UserDto, UserUpdate, UserFavorite }
+interface UserPage {
+  page: number
+  perPage: number
+}
+
+export { UserDto, UserUpdate, UserFavorite, UserPage }

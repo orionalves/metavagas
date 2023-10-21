@@ -5,6 +5,7 @@ import { Job } from '@/job/entities/Job.js'
 import { technologyRepository } from '@/technology/TechnologyModule'
 import { cityRepository } from '@/city/CityModule'
 import { techSearchRepository } from '@/techSearch/TechSearchModule'
+import { userRepository } from '@/user/UserModule'
 
 class JobModule {
   static getInstance() {
@@ -12,6 +13,7 @@ class JobModule {
     const service = new JobService(
       repository,
       technologyRepository,
+      userRepository,
       cityRepository,
       techSearchRepository
     )

@@ -16,7 +16,7 @@ const createJobs = jobRoutes.post(
 )
 
 const searchJobs = jobRoutes.get(
-  '/jobs',
+  '/:id/jobs',
   AuthMiddleware.handler,
   jobController.search.bind(jobController)
 )

@@ -11,6 +11,13 @@ const userUpdate = userRoutes.post(
   AuthMiddleware.handler,
   userController.update.bind(userController)
 )
+
+const getUserHistory = userRoutes.get(
+  '/:id/history',
+  AuthMiddleware.handler,
+  userController.showHistory.bind(userController)
+)
+
 const getUserFavorites = userRoutes.get(
   '/:id',
   AuthMiddleware.handler,
@@ -23,4 +30,4 @@ const postUserFavorites = userRoutes.post(
   userController.toggleFavorite.bind(userController)
 )
 
-export { userSignup, userUpdate, getUserFavorites, postUserFavorites }
+export { userSignup, userUpdate, getUserHistory, getUserFavorites, postUserFavorites }

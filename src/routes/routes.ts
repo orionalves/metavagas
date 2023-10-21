@@ -1,5 +1,11 @@
 import { Router } from 'express'
-import { userSignup, userUpdate, getUserFavorites, postUserFavorites } from '@/routes/userRoutes'
+import {
+  userSignup,
+  userUpdate,
+  getUserFavorites,
+  postUserFavorites,
+  getUserHistory
+} from '@/routes/userRoutes'
 import { authRoutes } from '@/routes/authRoutes'
 import { createJobs, searchJobs, getTrendsCities } from '@/routes/jobRoutes'
 import { postCity, getCity } from '@/routes/cityRoutes'
@@ -18,6 +24,7 @@ routes.use(getTrendsCities)
 // Auth
 routes.use(searchJobs)
 routes.use(userUpdate)
+routes.use(getUserHistory)
 routes.use(getUserFavorites)
 routes.use(postUserFavorites)
 routes.use(createJobs)

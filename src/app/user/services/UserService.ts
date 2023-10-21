@@ -3,7 +3,7 @@ import { commonReturn } from '@/utils/commonReturn'
 import { UserRepository } from '@/user/repositories/UserRepository'
 import { TypeUser } from '@/user/entities/User'
 import { status } from '@/utils/status'
-import { UserFavorite, UserUpdate } from '@/user/dtos/UserDto'
+import { UserFavorite, UserPage, UserUpdate } from '@/user/dtos/UserDto'
 import { comparePassword } from '@/utils/comparePassword'
 
 class UserService {
@@ -67,6 +67,10 @@ class UserService {
       }
     }
     return await this.repository.toggleFavorite(data)
+  }
+
+  async showHistory(id: string, data: UserPage) {
+    return await this.repository.showHistory(id, data)
   }
 }
 

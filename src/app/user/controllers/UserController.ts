@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import { userSchemaValidation } from '@/utils/validations/userSchemaValidation'
 import { UserService } from '@/user/services/UserService'
 import { status } from '@/utils/status'
-import { UserUpdate } from '../dtos/UserDto'
+import { UserPage, UserUpdate } from '@/user/dtos/UserDto'
 import { userUpdateValidation } from '@/utils/validations/userUpdateValidation'
 
 class UserController {
@@ -56,6 +56,17 @@ class UserController {
   async showFavorites(request: Request, response: Response) {
     const id = request.params.id
     const result = await this.service.showFavority(id)
+
+    if (result !== null && 'error' in result) {
+      return response.status(result.status).json(result)
+    }
+    return response.status(status.ok).json(result)
+  }
+
+  async showHistory(request: Request, response: Response) {
+    const id = request.params.id
+    const { query } = request
+    const result = await this.service.showHistory(id, query as unknown as UserPage)
 
     if (result !== null && 'error' in result) {
       return response.status(result.status).json(result)

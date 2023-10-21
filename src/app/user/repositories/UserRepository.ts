@@ -3,7 +3,7 @@ import { TypeUser } from '@/user/entities/User'
 import { commonReturn } from '@/utils/commonReturn'
 import { status } from '@/utils/status'
 import mongoose, { Model } from 'mongoose'
-import { UserFavorite, UserUpdate } from '@/user/dtos/UserDto'
+import { UserFavorite, UserPage, UserUpdate } from '@/user/dtos/UserDto'
 
 class UserRepository {
   constructor(private model: Model<TypeUser>) {}
@@ -54,9 +54,112 @@ class UserRepository {
     }
   }
 
+  async showHistory(id: string, data: UserPage) {
+    const page = data.page || 1
+    const perPage = data.perPage || 10
+    try {
+      const result = await this.model.aggregate([
+        { $match: { _id: new mongoose.Types.ObjectId(id) } },
+        {
+          $unwind: '$history'
+        },
+        {
+          $lookup: {
+            from: 'jobs',
+            localField: 'history',
+            foreignField: '_id',
+            as: 'history'
+          }
+        },
+        {
+          $unwind: '$history'
+        },
+        {
+          $lookup: {
+            from: 'technologies',
+            localField: 'history.technologies',
+            foreignField: '_id',
+            as: 'history.technologies'
+          }
+        },
+        {
+          $lookup: {
+            from: 'cities',
+            localField: 'history.city',
+            foreignField: '_id',
+            as: 'history.city'
+          }
+        },
+        {
+          $unwind: '$history.city'
+        },
+        {
+          $project: {
+            history: {
+              position: 1,
+              company: 1,
+              technologies: { name: 1 },
+              city: { name: 1, uf: 1 },
+              link: 1,
+              jobType: 1,
+              workRegime: 1,
+              companySize: 1,
+              salary: 1,
+              experienceLevel: 1,
+              description: 1
+            }
+          }
+        },
+        {
+          $facet: {
+            metadata: [
+              { $count: 'totalDocuments' },
+              {
+                $addFields: {
+                  totalPages: { $ceil: { $divide: ['$totalDocuments', Number(perPage)] } },
+                  page: Number(page)
+                }
+              }
+            ],
+            data: [{ $skip: (Number(page) - 1) * Number(perPage) }, { $limit: Number(perPage) }]
+          }
+        }
+      ])
+      result[0].metadata = { ...result[0].metadata[0], count: result[0].data.length }
+      return result
+    } catch (error) {
+      if (error instanceof Error) {
+        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
+      }
+      return commonReturn(true, 'Database conection failed.', status.internalServerError)
+    }
+  }
+
+  async handdlerHistory(id: string, data: string[]) {
+    const maxHistory = 4
+
+    try {
+      await this.model.findByIdAndUpdate(
+        id,
+        { $unset: { [`history.${maxHistory}`]: 1 } },
+        { new: true }
+      )
+      await this.model.findByIdAndUpdate(id, { $pull: { history: null } }, { new: true })
+      return await this.model.findByIdAndUpdate(
+        id,
+        { $push: { history: { $each: [data], $position: 0 } } },
+        { new: true }
+      )
+    } catch (error) {
+      if (error instanceof Error) {
+        return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)
+      }
+      return commonReturn(true, 'Database conection failed.', status.internalServerError)
+    }
+  }
+
   async showFavorite(id: string) {
     try {
-      // return this.model.findById(id)
       return this.model.aggregate([
         { $match: { _id: new mongoose.Types.ObjectId(id) } },
         {
@@ -64,7 +167,7 @@ class UserRepository {
         },
         {
           $lookup: {
-            from: 'jobs', // Nome da coleção "jobs" no seu banco de dados
+            from: 'jobs',
             localField: 'favorites',
             foreignField: '_id',
             as: 'favorites'
@@ -75,7 +178,7 @@ class UserRepository {
         },
         {
           $lookup: {
-            from: 'technologies', // Nome da coleção "technologies" no seu banco de dados
+            from: 'technologies',
             localField: 'favorites.technologies',
             foreignField: '_id',
             as: 'favorites.technologies'
@@ -83,7 +186,7 @@ class UserRepository {
         },
         {
           $lookup: {
-            from: 'cities', // Nome da coleção "cities" no seu banco de dados
+            from: 'cities',
             localField: 'favorites.city',
             foreignField: '_id',
             as: 'favorites.city'
@@ -102,6 +205,7 @@ class UserRepository {
               link: 1,
               jobType: 1,
               workRegime: 1,
+              companySize: 1,
               salary: 1,
               experienceLevel: 1,
               description: 1
@@ -144,17 +248,6 @@ class UserRepository {
       return commonReturn(true, 'Database conection failed.', status.internalServerError)
     }
   }
-
-  // async findAll() {
-  //   try {
-  //     return this.model.find().populate('')
-  //   } catch (error) {
-  //     if (error instanceof Error) {
-  //       return commonReturn(true,`❌ Problem: ${error.message}`, status.internalServerError)
-  //     }
-  //     return commonReturn(true,'Database conection failed.', status.internalServerError)
-  //   }
-  // }
 }
 
 export { UserRepository }

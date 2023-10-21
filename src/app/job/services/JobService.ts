@@ -2,6 +2,7 @@ import { JobRepository } from '@/job/repositories/JobRepository'
 import { status } from '@/utils/status'
 import { JobDto, JobSearch } from '@/job/dtos/JobDto'
 import { TechnologyRepository } from '@/technology/repositories/TechnologyRepository'
+import { UserRepository } from '@/user/repositories/UserRepository'
 import { CityRepository } from '@/city/repositories/CityRepository'
 import { TechSearchRepository } from '@/techSearch/repositories/TechSearchRepository'
 import { commonReturn } from '@/utils/commonReturn'
@@ -10,6 +11,7 @@ class JobService {
   constructor(
     private repository: JobRepository,
     private technologyRepository: TechnologyRepository,
+    private userRepository: UserRepository,
     private cityRepository: CityRepository,
     private techSearchRepository: TechSearchRepository
   ) {}
@@ -42,7 +44,7 @@ class JobService {
     return result
   }
 
-  async search(data: JobSearch) {
+  async search(id: string, data: JobSearch) {
     const cityExist = data.city ? await this.cityRepository.returnId(data.city) : null
     const city = typeof cityExist === 'string' ? cityExist : '000000000000000000000000'
     data.city = cityExist ? city : undefined
@@ -70,6 +72,13 @@ class JobService {
     })
 
     const result = await this.repository.search(data)
+
+    if (Array.isArray(result) && result.length > 0 && 'data' in result[0]) {
+      const historyData: { _id: string }[] = result[0].data // as unknown as Array<string>
+      const idsArray = historyData.map(item => item._id.toString())
+      await this.userRepository.handdlerHistory(id, idsArray)
+    }
+
     return result
   }
 
