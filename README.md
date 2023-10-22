@@ -36,6 +36,8 @@ Está acessível via: https://metavagas.onrender.com/ e https://glamorous-boa-fa
 
 [✓] Paginação.
 
+---
+
 ### Como usar?
 
 *Autenticação via baerer token*
@@ -45,7 +47,11 @@ Passar no header:
 Authorization: Bearer ${token}
 ```
 
-[✓] **Cadastrar usuário:**
+---
+
+### Rotas / Uso:
+
+[✓] **Cadastrar usuário**
 
 🟢 POST /signup
 
@@ -71,7 +77,7 @@ Ex. sucesso:
 }
 ```
 
-[✓] **Autenticar usuário:**
+[✓] **Autenticar usuário**
 
 🟢 POST /login
 
@@ -96,6 +102,60 @@ Ex. sucesso:
     "name": "Nome Completo",
     "email": "email@valido.com",
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidGVzdGUyIiwiZW1haWwiOiJ0ZXN0ZTJAdGVzdGUuY29tIiwiaWF0IjoxNjk3OTc1NTg5LCJleHAiOjE2OTc5NzU4ODl9.mn6Q603htLeWXacITFO4VBEwVlOY2RlRNbSc7ZbMAEc"
+}
+```
+
+[✓] **Atualizar nome e senha de usuário**
+
+🟡 PATCH /:id//update
+
+*necessita autenticação*
+
+Substituir :id pelo id do usuário.
+
+Ex.
+
+```
+{
+  "name": "Novo nome",
+  "password": "12345678"
+  "oldPassword": "senhade8dígitos"
+}
+```
+
+Ex. sucesso
+
+```
+{
+	"id": "65100eda0acec1a85b204b9b",
+	"name": "Novo Nome",
+	"email": "email@valido.com"
+}
+```
+
+[✓] **Cadastrar vaga**
+
+🟢 POST /jobs
+
+*necessita autenticação*
+
+Passar json no body contendo position, company, technologies, city, link, jobType, workRegime, companySize, salary, experienceLevel e description.
+
+Ex.
+
+```
+{
+  "position": "Buscador de vagas",
+  "company": "Tech Solutions",
+  "technologies": ["nodejs", "javascript"],
+  "city": "Recife",
+  "link": "https://example.com/job1",
+  "jobType": "remote",
+  "workRegime": "clt",
+  "companySize": "mid-level",
+  "salary": 8000,
+  "experienceLevel": "senior",
+  "description": "Procuramos um desenvolvedor web experiente para se juntar à nossa."
 }
 ```
 
@@ -159,13 +219,51 @@ Ex. sucesso
 
 *Quanto menor opções na query, maior chance de retorno.*
 
+[✓] **Favoritar vagas**
+
+🟢 POST /:id
+
+*necessita autenticação*
+
+Para favoritar passa a query favorite com o id do job
+
+Substituir :id pelo id do usuário.
+
+Ex.
+
+```
+/65100eda0acec1a85b204b9b?favorite=652f3aa798a1c0801103f49e
+```
+Para desfavoritar passa a query favorite com o id do job e a query remove=true
+
+Ex.
+
+```
+/65100eda0acec1a85b204b9b?favorite=652f3aa798a1c0801103f49e&remove=true
+```
+**Visualizar vaforitos**
+
+🟣 GET /:id
+
+*necessita autenticação*
+
+Substituir :id pelo id do usuário autenticado.
+
+[✓] **Histórico das últimas buscas**
+
+🟣 GET /:id/history
+
+*necessita autenticação*
+
+Substituir :id pelo id do usuário.
+
 [✓] **Mostrar as 5 tecnologias mais buscadas**
 
 🟣 GET /trends/techs
 
 Retorna as 5 tecnologias mais buscadas por todos os usuários.
 
-[✓] **Mostrar as 5 cidades que mais procuram a tecnologia.**
+[✓] **Mostrar as 5 cidades que mais procuram a tecnologia**
 
 🟣 GET /trends/:id/cities
 
@@ -173,41 +271,55 @@ Retorna as 5 cidades que mais buscam a tecnologia.
 
 Substituir :id pelo id da tecnologia.
 
-*Para conseguir o id da technologia mais buscada basta pegar o retorno do get /trends/tech*
+*Para conseguir o id da technologia mais buscada basta pegar o retorno do primeiro índice do get /trends/tech*
 
+Ex.
 ```
 $.[0].technology._id
 ```
 
-[✓] **Cadastrar vaga.**
+**Criar technologia**
 
-🟢 POST /jobs
+🟢 POST /tech
 
 *necessita autenticação*
 
-Passar json no body contendo position, company, technologies, city, link, jobType, workRegime, companySize, salary, experienceLevel e description.
+Passar o json com o nome da technologia.
 
 Ex.
 
-```
+´´´
 {
-  "position": "Buscador de vagas",
-  "company": "Tech Solutions",
-  "technologies": ["nodejs", "javascript"],
-  "city": "Recife",
-  "link": "https://example.com/job1",
-  "jobType": "remote",
-  "workRegime": "clt",
-  "companySize": "mid-level",
-  "salary": 8000,
-  "experienceLevel": "senior",
-  "description": "Procuramos um desenvolvedor web experiente para se juntar à nossa."
+  "name": "windows"
 }
-```
+´´´
 
+**Buscar todas tecnologias cadastradas**
 
+🟣 GET /tech
 
-🟡 PATCH
+**Criar cidade**
+
+🟢 POST /city
+
+*necessita autenticação*
+
+Passar o json com o nome e uf da cidade.
+
+Ex.
+
+´´´
+{
+  "name": "Vitória",
+  "uf": "ES"
+}
+´´´
+
+**Buscar todas cidades cadastradas**
+
+🟣 GET /city
+
+---
 
 ### Detalhes Adicionais
 
