@@ -8,6 +8,7 @@ import { TechnologyRepository } from '@/app/technology/repositories/TechnologyRe
 import { CityRepository } from '@/app/city/repositories/CityRepository'
 import { TechSearchRepository } from '@/techSearch/repositories/TechSearchRepository'
 import { commonReturn } from '@/utils/commonReturn'
+import { UserRepository } from '@/user/repositories/UserRepository'
 
 const repositoryMock = {
   findOne: vi.fn(),
@@ -26,6 +27,12 @@ const techSearchRepositoryMock = {
   findByTechnology: vi.fn(),
   incrementsTechnologyCount: vi.fn()
 }
+
+const userRepositoryMock = {
+  handdlerHistory: vi.fn()
+}
+
+const idMock = '123'
 
 const paramsMock: JobDto = {
   position: 'Teste',
@@ -64,6 +71,7 @@ const paramsMockJobSearchWitTechs: JobSearch = {
 const sut = new JobService(
   repositoryMock as unknown as JobRepository,
   technologyRepositoryMock as unknown as TechnologyRepository,
+  userRepositoryMock as unknown as UserRepository,
   cityRepositoryMock as unknown as CityRepository,
   techSearchRepositoryMock as unknown as TechSearchRepository
 )
@@ -122,7 +130,7 @@ describe('JobService search', () => {
   it('Should be able to search jobs without technologies.', async () => {
     vi.spyOn(repositoryMock, 'search').mockResolvedValue('All jobs without technologies.')
 
-    const result = await sut.search(paramsMockJobSearchWithoutTechs)
+    const result = await sut.search(idMock, paramsMockJobSearchWithoutTechs)
     const expected = 'All jobs without technologies.'
 
     expect(result).toStrictEqual(expected)
@@ -131,7 +139,7 @@ describe('JobService search', () => {
   it('Should be able to search jobs with technologies.', async () => {
     vi.spyOn(repositoryMock, 'search').mockResolvedValue('All jobs with technologies.')
 
-    const result = await sut.search(paramsMockJobSearchWitTechs)
+    const result = await sut.search(idMock, paramsMockJobSearchWitTechs)
     const expected = 'All jobs with technologies.'
 
     expect(result).toStrictEqual(expected)

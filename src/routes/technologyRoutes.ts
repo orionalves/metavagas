@@ -4,15 +4,15 @@ import { AuthMiddleware } from '@/middlewares/AuthMiddleware'
 
 const technologyRoutes = Router()
 
+const getTechnology = technologyRoutes.get(
+  '/tech',
+  technologyController.index.bind(technologyController)
+)
+
 const postTechnology = technologyRoutes.post(
   '/tech',
   AuthMiddleware.handler,
   technologyController.create.bind(technologyController)
 )
 
-const getTechnology = technologyRoutes.get(
-  '/tech',
-  technologyController.index.bind(technologyController)
-)
-
-export { postTechnology, getTechnology }
+export { getTechnology, postTechnology }

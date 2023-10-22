@@ -8,7 +8,7 @@ interface UserUpdate {
   id: string
   name?: string
   password?: string
-  oldPassword: string
+  oldPassword?: string
 }
 
 interface UserFavorite {

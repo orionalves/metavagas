@@ -9,15 +9,15 @@ import {
 import { authRoutes } from '@/routes/authRoutes'
 import { createJobs, searchJobs, getTrendsCities } from '@/routes/jobRoutes'
 import { postCity, getCity } from '@/routes/cityRoutes'
-import { postTechnology, getTechnology } from '@/routes/technologyRoutes'
+import { getTechnology, postTechnology } from '@/routes/technologyRoutes'
 import { getTrendTech } from '@/routes/techSearchRoutes'
 
 const routes = Router()
 
+routes.use(getTechnology)
 routes.use(authRoutes)
 routes.use(userSignup)
 routes.use(getCity)
-routes.use(getTechnology)
 routes.use(getTrendTech)
 routes.use(getTrendsCities)
 

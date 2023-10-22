@@ -240,7 +240,7 @@ class UserRepository {
 
   async findFavorite(id: string) {
     try {
-      return this.model.findOne({ favorites: [id] })
+      return this.model.find({ favorites: [id] })
     } catch (error) {
       if (error instanceof Error) {
         return commonReturn(true, `❌ Problem: ${error.message}`, status.internalServerError)

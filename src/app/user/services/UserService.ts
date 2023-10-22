@@ -60,12 +60,6 @@ class UserService {
   }
 
   async toggleFavorite(data: UserFavorite) {
-    if (!data.remove) {
-      const favoriteExiste = await this.repository.findFavorite(data.favorite)
-      if (favoriteExiste) {
-        return commonReturn(true, '❌ Problem: Already favorited.', status.badRequest)
-      }
-    }
     return await this.repository.toggleFavorite(data)
   }
 

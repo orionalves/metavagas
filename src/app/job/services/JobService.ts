@@ -59,7 +59,15 @@ class JobService {
     data.technologies = technologies.length === 0 ? undefined : technologies
 
     if (!data.technologies) {
-      return await this.repository.search(data)
+      const result = await this.repository.search(data)
+
+      if (Array.isArray(result) && result.length > 0 && 'data' in result[0]) {
+        const historyData: { _id: string }[] = result[0].data
+        const idsArray = historyData.map(item => item._id.toString())
+        await this.userRepository.handdlerHistory(id, idsArray)
+      }
+
+      return result
     }
 
     data.technologies.forEach(async technology => {
@@ -74,7 +82,7 @@ class JobService {
     const result = await this.repository.search(data)
 
     if (Array.isArray(result) && result.length > 0 && 'data' in result[0]) {
-      const historyData: { _id: string }[] = result[0].data // as unknown as Array<string>
+      const historyData: { _id: string }[] = result[0].data
       const idsArray = historyData.map(item => item._id.toString())
       await this.userRepository.handdlerHistory(id, idsArray)
     }
