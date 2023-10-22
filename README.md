@@ -71,9 +71,9 @@ Ex. sucesso:
 
 ```
 {
-    "error": false,
-    "message": "✔️ Ok: User created!",
-    "status": 201
+  "error": false,
+  "message": "✔️ Ok: User created!",
+  "status": 201
 }
 ```
 
@@ -98,10 +98,10 @@ Ex. sucesso:
 
 ```
 {
-    "id": "65100eda0acec1a85b204b9b",
-    "name": "Nome Completo",
-    "email": "email@valido.com",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidGVzdGUyIiwiZW1haWwiOiJ0ZXN0ZTJAdGVzdGUuY29tIiwiaWF0IjoxNjk3OTc1NTg5LCJleHAiOjE2OTc5NzU4ODl9.mn6Q603htLeWXacITFO4VBEwVlOY2RlRNbSc7ZbMAEc"
+  "id": "65100eda0acec1a85b204b9b",
+  "name": "Nome Completo",
+  "email": "email@valido.com",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidGVzdGUyIiwiZW1haWwiOiJ0ZXN0ZTJAdGVzdGUuY29tIiwiaWF0IjoxNjk3OTc1NTg5LCJleHAiOjE2OTc5NzU4ODl9.mn6Q603htLeWXacITFO4VBEwVlOY2RlRNbSc7ZbMAEc"
 }
 ```
 
@@ -127,9 +127,9 @@ Ex. sucesso
 
 ```
 {
-	"id": "65100eda0acec1a85b204b9b",
-	"name": "Novo Nome",
-	"email": "email@valido.com"
+  "id": "65100eda0acec1a85b204b9b",
+  "name": "Novo Nome",
+  "email": "email@valido.com"
 }
 ```
 
@@ -189,31 +189,31 @@ Ex. query
 Ex. sucesso
 ```
 {
-	"_id": "65283ba9272bd4ccb1639e35",
-	"position": "Web Developer",
-	"company": "Tech Solutions",
-	"city": {
-		"name": "Salvador",
-		"uf": "BA"
-	},
-	"link": "https://example.com/job1",
-	"jobType": "remote",
-	"workRegime": "clt",
-	"companySize": "mid-level",
-	"salary": 8000,
-	"experienceLevel": "senior",
-	"description": "Procuramos um desenvolvedor web experiente para se juntar à nossa equipe.",
-	"technologies": [
-		{
-			"name": "javascript"
-		},
-		{
-			"name": "react"
-		},
-		{
-			"name": "nodejs"
-		}
-	]
+  "_id": "65283ba9272bd4ccb1639e35",
+  "position": "Web Developer",
+  "company": "Tech Solutions",
+  "city": {
+    "name": "Salvador",
+    "uf": "BA"
+  },
+  "link": "https://example.com/job1",
+  "jobType": "remote",
+  "workRegime": "clt",
+  "companySize": "mid-level",
+  "salary": 8000,
+  "experienceLevel": "senior",
+  "description": "Procuramos um desenvolvedor web experiente para se juntar à nossa equipe.",
+  "technologies": [
+    {
+      "name": "javascript"
+    },
+    {
+      "name": "react"
+    },
+    {
+      "name": "nodejs"
+    }
+  ]
 }
 ```
 
