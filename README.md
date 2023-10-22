@@ -15,15 +15,25 @@ Está acessível via: https://metavagas.onrender.com/ e https://glamorous-boa-fa
 ### Funcionalidades:
 
 [✓] Cadastrar usuário.
+
 [✓] Login.
+
 [✓] Buscar vagas utilizando múltiplos filtros.
+
 [✓] Registro quando ocorre busca por tecnologia.
+
 [✓] Mostrar as 5 tecnologias mais buscadas.
+
 [✓] Mostrar as 5 cidades que mais procuram a tecnologia mais buscada.
+
 [✓] Usuário pode cadastrar vaga.
+
 [✓] Atualizar nome e senha de usuário.
+
 [✓] Favoritar vagas.
+
 [✓] Histórico das últimas buscas.
+
 [✓] Paginação.
 
 ### Como usar?
@@ -66,6 +76,7 @@ Ex. sucesso:
 🟢 POST /login
 
 *validar com usuário já cadastrado*
+
 Passar json no body contendo email e password.
 
 Ex.
@@ -117,33 +128,33 @@ Ex. query
 
 Ex. sucesso
 ```
-			{
-				"_id": "65283ba9272bd4ccb1639e35",
-				"position": "Web Developer",
-				"company": "Tech Solutions",
-				"city": {
-					"name": "Salvador",
-					"uf": "BA"
-				},
-				"link": "https://example.com/job1",
-				"jobType": "remote",
-				"workRegime": "clt",
-				"companySize": "mid-level",
-				"salary": 8000,
-				"experienceLevel": "senior",
-				"description": "Procuramos um desenvolvedor web experiente para se juntar à nossa equipe.",
-				"technologies": [
-					{
-						"name": "javascript"
-					},
-					{
-						"name": "react"
-					},
-					{
-						"name": "nodejs"
-					}
-				]
-			}
+{
+	"_id": "65283ba9272bd4ccb1639e35",
+	"position": "Web Developer",
+	"company": "Tech Solutions",
+	"city": {
+		"name": "Salvador",
+		"uf": "BA"
+	},
+	"link": "https://example.com/job1",
+	"jobType": "remote",
+	"workRegime": "clt",
+	"companySize": "mid-level",
+	"salary": 8000,
+	"experienceLevel": "senior",
+	"description": "Procuramos um desenvolvedor web experiente para se juntar à nossa equipe.",
+	"technologies": [
+		{
+			"name": "javascript"
+		},
+		{
+			"name": "react"
+		},
+		{
+			"name": "nodejs"
+		}
+	]
+}
 ```
 
 *Quanto menor opções na query, maior chance de retorno.*
@@ -159,6 +170,7 @@ Retorna as 5 tecnologias mais buscadas por todos os usuários.
 🟣 GET /trends/:id/cities
 
 Retorna as 5 cidades que mais buscam a tecnologia.
+
 Substituir :id pelo id da tecnologia.
 
 *Para conseguir o id da technologia mais buscada basta pegar o retorno do get /trends/tech*
@@ -172,6 +184,10 @@ $.[0].technology._id
 🟢 POST /jobs
 
 *necessita autenticação*
+
+Passar json no body contendo position, company, technologies, city, link, jobType, workRegime, companySize, salary, experienceLevel e description.
+
+Ex.
 
 ```
 {
@@ -188,6 +204,8 @@ $.[0].technology._id
   "description": "Procuramos um desenvolvedor web experiente para se juntar à nossa."
 }
 ```
+
+
 
 🟡 PATCH
 
