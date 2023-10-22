@@ -8,9 +8,9 @@ A API permite buscas por nome, tecnologia, cidade, tipo de trabalho, regime de c
 
 ### Detalhes:
 
-Api está testada e inversão de dependências.
+A api está testada e usa inversão de dependências.
 Foi criada com nodejs e TypeScript.
-Está acessível via: https://metavagas.onrender.com/ e https://glamorous-boa-fatigues.cyclic.cloud/
+Está acessível via: https://metavagas.onrender.com/ ou https://glamorous-boa-fatigues.cyclic.cloud/
 
 ### Funcionalidades:
 
